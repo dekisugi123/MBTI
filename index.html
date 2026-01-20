@@ -1663,7 +1663,9 @@ function toggleTypeDetails(type){
 /* ---------------------------
    Navigation
 --------------------------- */
+let currentStep = "instructions";
 function goto(step){
+  currentStep = step;
   document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
   const target = document.getElementById(`step-${step}`);
   if (target) target.classList.add("active");
@@ -1794,6 +1796,36 @@ function importJson(text){
 
 (function init(){
   wireNav();
+  lang = localStorage.getItem("lang") || "en";
+  applyI18n();
+
+  const savedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(savedTheme);
+
+  // ----- Language switch (EN <-> VI) -----
+  const langSwitch = document.getElementById("langSwitch");
+  if (langSwitch){
+    langSwitch.checked = (lang === "vi");
+    langSwitch.addEventListener("change", () => {
+      lang = langSwitch.checked ? "vi" : "en";
+      localStorage.setItem("lang", lang);
+
+      applyI18n();
+
+      // re-render dynamic content already on screen
+      if (currentStep === "questions") renderFunctions();
+      if (currentStep === "results") renderResults();
+    });
+  }
+
+  // ----- Theme switch (Light <-> Dark) -----
+  const themeSwitch = document.getElementById("themeSwitch");
+  if (themeSwitch){
+    themeSwitch.checked = (savedTheme === "dark");
+    themeSwitch.addEventListener("change", () => {
+      applyTheme(themeSwitch.checked ? "dark" : "light");
+    });
+  }
   renderFunctions();
 
   document.getElementById("btnReset").addEventListener("click", resetAll);
