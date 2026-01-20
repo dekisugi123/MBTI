@@ -4,28 +4,113 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MBTI Cognitive Functions — Dom/Aux + Tert/Inf Self-Check</title>
+
+  <!-- Fonts with good Vietnamese coverage -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans:wght@400;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+
   <style>
     :root{
+      /* LIGHT MODE (default) */
+      --bg:#f6f8fb;
+      --bgTop:#ffffff;
+
+      --panel:#ffffff;
+      --panel2:#f7f9fc;
+
+      --surface: rgba(255,255,255,.78);
+      --surface2: rgba(255,255,255,.92);
+
+      --inputBg: rgba(255,255,255,.95);
+
+      --text:#0b0d10;
+      --muted:#445364;
+
+      --accent:#1677ff;
+      --accent2:#18a957;
+
+      --warn:#c87a00;
+      --danger:#d62828;
+
+      --border:#d7e0ea;
+      --borderHover:#b9c6d6;
+
+      --shadow: 0 10px 30px rgba(0,0,0,.10);
+      --radius:16px;
+
+      --headerBg: rgba(255,255,255,.86);
+
+      --btnBg: linear-gradient(180deg, #ffffff, #f2f6fb);
+      --btnShadow: 0 6px 18px rgba(0,0,0,.08);
+      --btnPrimaryBg: linear-gradient(180deg, #1f7ef7, #1659b8);
+      --btnPrimaryBorder: #1c6fe0;
+
+      --badgeBg: rgba(22,119,255,.10);
+      --badgeBorder: rgba(22,119,255,.25);
+      --badgeJBg: rgba(24,169,87,.10);
+      --badgeJBorder: rgba(24,169,87,.25);
+      --badgeNegBg: rgba(200,122,0,.10);
+      --badgeNegBorder: rgba(200,122,0,.25);
+
+      --noteBg: rgba(22,119,255,.08);
+      --noteWarnBg: rgba(200,122,0,.10);
+      --noteDangerBg: rgba(214,40,40,.10);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: "Inter","Noto Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    :root[data-theme="dark"]{
       --bg:#0b0d10;
-      --panel:#12161c;
-      --panel2:#0f1318;
+      --bgTop:#141a22;
+
+      --panel: rgba(18,22,28,.95);
+      --panel2: rgba(15,19,24,.95);
+
+      --surface: rgba(15,19,24,.65);
+      --surface2: rgba(18,22,28,.80);
+
+      --inputBg: rgba(10,12,15,.90);
+
       --text:#e9eef5;
       --muted:#a9b4c2;
+
       --accent:#7cc4ff;
       --accent2:#a8ffbf;
+
       --warn:#ffd27c;
       --danger:#ff7c7c;
+
       --border:#263040;
+      --borderHover:#3a4b63;
+
       --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+      --headerBg: rgba(11,13,16,.75);
+
+      --btnBg: linear-gradient(180deg, #1a2230, #131a24);
+      --btnShadow: 0 6px 18px rgba(0,0,0,.18);
+      --btnPrimaryBg: linear-gradient(180deg, #245b88, #1a3552);
+      --btnPrimaryBorder: #2f78b3;
+
+      --badgeBg: rgba(124,196,255,.12);
+      --badgeBorder: rgba(124,196,255,.30);
+      --badgeJBg: rgba(168,255,191,.10);
+      --badgeJBorder: rgba(168,255,191,.28);
+      --badgeNegBg: rgba(255,210,124,.10);
+      --badgeNegBorder: rgba(255,210,124,.28);
+
+      --noteBg: rgba(124,196,255,.08);
+      --noteWarnBg: rgba(255,210,124,.08);
+      --noteDangerBg: rgba(255,124,124,.08);
     }
+
     html, body { height: 100%; }
     body{
       margin:0;
       font-family: var(--sans);
-      background: radial-gradient(1200px 800px at 20% 0%, #141a22 0%, var(--bg) 60%);
+      background: radial-gradient(1200px 800px at 20% 0%, var(--bgTop) 0%, var(--bg) 60%);
       color: var(--text);
     }
     a{ color: var(--accent); text-decoration: none; }
@@ -36,7 +121,7 @@
       top:0;
       z-index: 10;
       backdrop-filter: blur(10px);
-      background: rgba(11,13,16,.75);
+      background: var(--headerBg);
       border-bottom: 1px solid var(--border);
     }
     .wrap{
@@ -51,18 +136,21 @@
       gap:16px;
       flex-wrap: wrap;
     }
+
+    /* Bigger fonts (you can adjust these if you want even larger) */
     h1{
-      font-size: 18px;
+      font-size: 20px;
       margin: 0 0 6px 0;
       letter-spacing: .2px;
     }
     .sub{
       margin:0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
+      font-size: 15px;
+      line-height: 1.45;
       max-width: 780px;
     }
+
     .nav{
       display:flex;
       gap:10px;
@@ -70,35 +158,41 @@
       align-items:center;
       justify-content:flex-end;
     }
+
     .btn{
-      background: linear-gradient(180deg, #1a2230, #131a24);
+      background: var(--btnBg);
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 13px;
+      padding: 12px 14px;
+      font-size: 15px;
       cursor:pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+      box-shadow: var(--btnShadow);
     }
-    .btn:hover{ border-color: #3a4b63; }
+    .btn:hover{ border-color: var(--borderHover); }
     .btn.primary{
-      background: linear-gradient(180deg, #245b88, #1a3552);
-      border-color: #2f78b3;
+      background: var(--btnPrimaryBg);
+      border-color: var(--btnPrimaryBorder);
+      color: #ffffff;
+    }
+    :root[data-theme="dark"] .btn.primary{
+      color: var(--text);
     }
     .btn.ghost{
       background: transparent;
       box-shadow:none;
     }
+
     .pill{
       display:inline-flex;
       gap:8px;
       align-items:center;
-      padding: 6px 10px;
+      padding: 7px 11px;
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 14px;
       color: var(--muted);
-      background: rgba(18,22,28,.65);
+      background: var(--surface2);
     }
     .dot{ width:8px;height:8px;border-radius:999px;background: var(--accent); display:inline-block; }
 
@@ -114,7 +208,7 @@
       .grid.three{ grid-template-columns: 1fr 1fr 1fr; }
     }
     .card{
-      background: linear-gradient(180deg, rgba(18,22,28,.95), rgba(15,19,24,.95));
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -122,44 +216,43 @@
     }
     .card h2{
       margin: 0 0 10px 0;
-      font-size: 15px;
+      font-size: 17px;
       letter-spacing: .2px;
     }
     .card p{
       margin: 8px 0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
+      font-size: 15px;
+      line-height: 1.55;
     }
+
     .note{
       border-left: 3px solid var(--accent);
       padding: 10px 12px;
-      background: rgba(124,196,255,.08);
+      background: var(--noteBg);
       border-radius: 12px;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
+      font-size: 15px;
+      line-height: 1.55;
     }
     .warn{
       border-left-color: var(--warn);
-      background: rgba(255,210,124,.08);
+      background: var(--noteWarnBg);
     }
     .danger{
       border-left-color: var(--danger);
-      background: rgba(255,124,124,.08);
+      background: var(--noteDangerBg);
     }
-    .small{ font-size: 12px; color: var(--muted); }
-    .step{
-      display:none;
-    }
-    .step.active{
-      display:block;
-    }
+
+    .small{ font-size: 14px; color: var(--muted); }
+
+    .step{ display:none; }
+    .step.active{ display:block; }
 
     details{
       border: 1px solid var(--border);
       border-radius: 14px;
-      background: rgba(18,22,28,.7);
+      background: var(--surface2);
       overflow: hidden;
     }
     details summary{
@@ -173,43 +266,47 @@
       user-select:none;
     }
     details summary::-webkit-details-marker{ display:none; }
+
     .fnTitle{
       display:flex;
       align-items:center;
       gap:10px;
-      font-size: 14px;
+      font-size: 16px;
       margin:0;
     }
+
     .badge{
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 13px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(124,196,255,.12);
-      border: 1px solid rgba(124,196,255,.3);
+      background: var(--badgeBg);
+      border: 1px solid var(--badgeBorder);
       color: var(--text);
     }
-    .badge.j{ background: rgba(168,255,191,.10); border-color: rgba(168,255,191,.28); }
-    .badge.neg{ background: rgba(255,210,124,.10); border-color: rgba(255,210,124,.28); }
+    .badge.j{ background: var(--badgeJBg); border-color: var(--badgeJBorder); }
+    .badge.neg{ background: var(--badgeNegBg); border-color: var(--badgeNegBorder); }
 
     .section{
       padding: 0 12px 12px;
       border-top: 1px solid var(--border);
     }
+
     .q{
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 12px;
       margin-top: 10px;
-      background: rgba(15,19,24,.65);
+      background: var(--surface);
     }
     .q h3{
       margin: 0 0 8px 0;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--text);
-      line-height: 1.35;
+      line-height: 1.45;
     }
+
     .row{
       display:flex;
       gap:10px;
@@ -218,7 +315,7 @@
       margin: 10px 0;
     }
     label{
-      font-size: 12px;
+      font-size: 14px;
       color: var(--muted);
     }
     input[type="range"]{
@@ -226,31 +323,33 @@
       accent-color: var(--accent);
     }
     select, textarea, input[type="text"]{
-      background: rgba(10,12,15,.9);
+      background: var(--inputBg);
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 10px 10px;
-      font-size: 13px;
+      font-size: 15px;
       outline:none;
     }
     textarea{
       width: 100%;
-      min-height: 90px;
+      min-height: 100px;
       resize: vertical;
-      line-height: 1.35;
+      line-height: 1.45;
     }
+
     .kpi{
       display:flex;
       gap:10px;
       flex-wrap: wrap;
     }
-    .kpi .pill{ background: rgba(15,19,24,.65); }
+    .kpi .pill{ background: var(--surface); }
+
     .bar{
       height: 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(10,12,15,.9);
+      background: var(--inputBg);
       overflow:hidden;
     }
     .bar > div{
@@ -258,10 +357,11 @@
       width: 0%;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
     }
+
     table{
       width:100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text);
       overflow:hidden;
       border-radius: 14px;
@@ -275,17 +375,19 @@
       text-align:left;
       color: var(--muted);
       font-weight: 600;
-      background: rgba(15,19,24,.65);
+      background: var(--surface);
     }
     tr:last-child td{ border-bottom: none; }
+
     .right{ text-align:right; }
     .muted{ color: var(--muted); }
     .mono{ font-family: var(--mono); }
+
     .typeCard{
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 12px;
-      background: rgba(15,19,24,.65);
+      background: var(--surface);
       margin-top: 10px;
     }
     .typeHead{
@@ -296,16 +398,17 @@
       flex-wrap: wrap;
     }
     .typeName{
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       margin:0;
     }
     .stack{
       font-family: var(--mono);
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       margin: 6px 0 0 0;
     }
+
     .split{
       display:grid;
       gap: 12px;
@@ -314,12 +417,14 @@
     @media(min-width: 920px){
       .split{ grid-template-columns: 1fr 1fr; }
     }
+
     .footer{
       margin-top: 12px;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 14px;
+      line-height: 1.55;
     }
+
     .inline{
       display:inline-flex;
       gap:8px;
@@ -331,47 +436,112 @@
       background: var(--border);
       margin: 12px 0;
     }
+
     .toast{
       position: fixed;
       bottom: 16px;
       right: 16px;
-      background: rgba(18,22,28,.95);
+      background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
       box-shadow: var(--shadow);
       padding: 10px 12px;
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text);
       display:none;
       max-width: 360px;
       z-index: 99;
     }
     .toast.show{ display:block; }
+
+    /* Toggle pills + slider */
+    .togglePill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface2);
+    }
+    .switch{
+      position:relative;
+      width:44px;
+      height:24px;
+      display:inline-block;
+    }
+    .switch input{ display:none; }
+    .slider{
+      position:absolute;
+      inset:0;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--surface);
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .slider::before{
+      content:"";
+      position:absolute;
+      width:18px;
+      height:18px;
+      left:3px;
+      top:50%;
+      transform: translateY(-50%);
+      border-radius:999px;
+      background: var(--text);
+      transition: transform .2s ease;
+    }
+    .switch input:checked + .slider::before{
+      transform: translate(20px, -50%);
+    }
   </style>
 </head>
+
 <body>
 <header>
   <div class="wrap">
     <div class="top">
       <div>
-        <h1>Dom/Aux + Tert/Inf Self-Check (Cognitive Functions)</h1>
-        <p class="sub">
+        <h1 data-i18n="title">Dom/Aux + Tert/Inf Self-Check (Cognitive Functions)</h1>
+        <p class="sub" data-i18n="subtitle">
           A self-reflection tool (static, runs fully in your browser). Uses open-ended examples + recurrence scoring,
-          then matches your profile against standard 16-type function stacks.
-          <span class="mono">Not a diagnosis.</span>
+          then matches your profile against standard 16-type function stacks. <span class="mono">Not a diagnosis.</span>
         </p>
         <div style="margin-top:10px" class="kpi">
-          <span class="pill"><span class="dot"></span>Autosaves locally</span>
-          <span class="pill"><span class="dot" style="background:var(--accent2)"></span>Exports JSON + LLM prompt</span>
-          <span class="pill"><span class="dot" style="background:var(--warn)"></span>Downweights “stress/grip” answers</span>
+          <span class="pill"><span class="dot"></span><span data-i18n="kpi_autosave">Autosaves locally</span></span>
+          <span class="pill"><span class="dot" style="background:var(--accent2)"></span><span data-i18n="kpi_export">Exports JSON + LLM prompt</span></span>
+          <span class="pill"><span class="dot" style="background:var(--warn)"></span><span data-i18n="kpi_downweight">Downweights “stress/grip” answers</span></span>
         </div>
       </div>
+
       <div class="nav">
-        <button class="btn ghost" data-nav="instructions">Instructions</button>
-        <button class="btn ghost" data-nav="questions">Questionnaire</button>
-        <button class="btn primary" data-nav="results">Results</button>
-        <button class="btn ghost" data-nav="export">Export / LLM</button>
-        <button class="btn" id="btnReset">Reset</button>
+        <button class="btn ghost" data-nav="instructions" data-i18n="nav_instructions">Instructions</button>
+        <button class="btn ghost" data-nav="questions" data-i18n="nav_questionnaire">Questionnaire</button>
+        <button class="btn primary" data-nav="results" data-i18n="nav_results">Results</button>
+        <button class="btn ghost" data-nav="export" data-i18n="nav_export">Export / LLM</button>
+
+        <!-- Language switch (EN <-> VI) -->
+        <div class="togglePill" title="Language / Ngôn ngữ">
+          <span class="small muted">EN</span>
+          <label class="switch">
+            <input type="checkbox" id="langSwitch" />
+            <span class="slider"></span>
+          </label>
+          <span class="small muted">VI</span>
+        </div>
+
+        <!-- Theme switch (Light <-> Dark) -->
+        <div class="togglePill" title="Theme">
+          <span class="small muted" data-i18n="theme_light">Light</span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch" />
+            <span class="slider"></span>
+          </label>
+          <span class="small muted" data-i18n="theme_dark">Dark</span>
+        </div>
+
+        <button class="btn" id="btnReset" data-i18n="nav_reset">Reset</button>
       </div>
     </div>
   </div>
@@ -382,47 +552,45 @@
 
     <section id="step-instructions" class="step active">
       <div class="grid two">
+
         <div class="card">
-          <h2>How to use this (so it actually works)</h2>
-          <div class="note">
+          <h2 data-i18n="inst_h">How to use this (so it actually works)</h2>
+          <div class="note" data-i18n="inst_note">
             For each prompt, write a <b>recurring real-life pattern</b> (ideally 2–3 instances across time).
             If it’s mostly a one-off, mark recurrence as “one-off” so it gets downweighted.
           </div>
 
-          <p><b>Rating tip:</b> your slider is “how often this describes you across life,” not “can you do this sometimes?”</p>
-
-          <p><b>Stress/grip checkbox:</b> if the behavior mainly appears when you’re stressed, check it. The tool will downweight it, because lower functions can spike under stress.</p>
+          <p data-i18n="inst_tip"><b>Rating tip:</b> your slider is “how often this describes you across life,” not “can you do this sometimes?”</p>
+          <p data-i18n="inst_stress"><b>Stress/grip checkbox:</b> if the behavior mainly appears when you’re stressed, check it. The tool will downweight it, because lower functions can spike under stress.</p>
 
           <div class="hr"></div>
 
-          <p class="small">
-            Source inspiration: <span class="mono">mbti-notes.tumblr.com/theory</span>.
-            This tool is only a structured journaling assistant.
+          <p class="small" data-i18n="inst_source">
+            Source inspiration: <span class="mono">mbti-notes.tumblr.com/theory</span>. This tool is only a structured journaling assistant.
           </p>
 
           <div class="row">
-            <button class="btn primary" data-nav="questions">Start the questionnaire</button>
-            <button class="btn" id="btnDemoFill">(Optional) Fill demo data</button>
+            <button class="btn primary" data-nav="questions" data-i18n="btn_start">Start the questionnaire</button>
+            <button class="btn" id="btnDemoFill" data-i18n="btn_demo">(Optional) Fill demo data</button>
           </div>
         </div>
 
         <div class="card">
-          <h2>What “Dom/Aux/Tert/Inf” means (in this tool)</h2>
-          <p>
-            You’ll answer prompts for all eight functions. Then we:
-          </p>
-          <ul class="small" style="line-height:1.6; color: var(--muted); margin-top:8px;">
-            <li>Compute an evidence score (0–100) per function.</li>
-            <li>Match your scores to standard 16-type stacks (e.g., ISTJ = Si–Te–Fi–Ne).</li>
-            <li>Show top candidate stacks + how your function scores support <b>Dom/Aux</b>, and whether <b>Tert/Inf</b> are plausibly lower.</li>
+          <h2 data-i18n="meaning_h">What “Dom/Aux/Tert/Inf” means (in this tool)</h2>
+          <p data-i18n="meaning_p">You’ll answer prompts for all eight functions. Then we:</p>
+
+          <ul class="small" style="line-height:1.7; color: var(--muted); margin-top:8px;">
+            <li data-i18n="meaning_li1">Compute an evidence score (0–100) per function.</li>
+            <li data-i18n="meaning_li2">Match your scores to standard 16-type stacks (e.g., ISTJ = Si–Te–Fi–Ne).</li>
+            <li data-i18n="meaning_li3">Show top candidate stacks + how your function scores support <b>Dom/Aux</b>, and whether <b>Tert/Inf</b> are plausibly lower.</li>
           </ul>
 
-          <div class="note warn" style="margin-top:10px;">
-            If your top 2 candidate stacks are close, you should re-check the “differentiators”:
+          <div class="note warn" style="margin-top:10px;" data-i18n="meaning_warn">
+            If your top 2 candidate stacks are close, re-check the “differentiators”:
             usually Aux and Tert (e.g., Te vs Fe, Ti vs Fi).
           </div>
 
-          <p class="footer">
+          <p class="footer" data-i18n="meaning_footer">
             This is <b>not</b> a scientific personality test. Treat as a guided reflection structure.
           </p>
         </div>
@@ -431,16 +599,16 @@
 
     <section id="step-questions" class="step">
       <div class="card">
-        <h2>Questionnaire</h2>
-        <p>
+        <h2 data-i18n="q_h">Questionnaire</h2>
+        <p data-i18n="q_p">
           For each function: (1) rate the “NOT dominant” anti-signs, then (2) answer the prompts with examples.
           Everything autosaves locally.
         </p>
         <div id="functionsContainer" class="grid"></div>
 
         <div class="row" style="margin-top:14px;">
-          <button class="btn primary" data-nav="results">Compute results</button>
-          <span class="small muted">You can compute anytime; you don’t need to finish all functions.</span>
+          <button class="btn primary" data-nav="results" data-i18n="btn_compute">Compute results</button>
+          <span class="small muted" data-i18n="q_hint">You can compute anytime; you don’t need to finish all functions.</span>
         </div>
       </div>
     </section>
@@ -448,14 +616,14 @@
     <section id="step-results" class="step">
       <div class="grid two">
         <div class="card">
-          <h2>Your function evidence (ranked)</h2>
+          <h2 data-i18n="r_fn_h">Your function evidence (ranked)</h2>
           <div id="fnRank"></div>
           <div class="hr"></div>
           <div id="fnTable"></div>
         </div>
 
         <div class="card">
-          <h2>Best-matching stacks (Dom/Aux + Tert/Inf)</h2>
+          <h2 data-i18n="r_type_h">Best-matching stacks (Dom/Aux + Tert/Inf)</h2>
           <div id="typeRank"></div>
           <div class="hr"></div>
           <div id="tieBreak"></div>
@@ -463,13 +631,13 @@
       </div>
 
       <div class="card" style="margin-top:14px;">
-        <h2>How to “confirm” Tert/Inf (practically)</h2>
-        <div class="note">
+        <h2 data-i18n="confirm_h">How to “confirm” Tert/Inf (practically)</h2>
+        <div class="note" data-i18n="confirm_note">
           Look for: (a) your Tert being “available but inconsistent,” and (b) your Inf being mostly “stress-activated”
           or hard to sustain. If your “Inferior” function scored high and you marked it as lifelong (not stress),
           that’s a flag that your dominant/aux guess may be wrong.
         </div>
-        <p class="small muted">
+        <p class="small muted" data-i18n="confirm_p">
           Use the “Export / LLM” tab if you want an LLM to summarize your examples and point out contradictions.
         </p>
       </div>
@@ -478,36 +646,36 @@
     <section id="step-export" class="step">
       <div class="grid two">
         <div class="card">
-          <h2>Export your data</h2>
-          <p class="small muted">Exports include all ratings + your written examples.</p>
+          <h2 data-i18n="ex_h">Export your data</h2>
+          <p class="small muted" data-i18n="ex_p">Exports include all ratings + your written examples.</p>
           <div class="row">
-            <button class="btn primary" id="btnDownloadJson">Download JSON</button>
-            <button class="btn" id="btnCopyJson">Copy JSON</button>
+            <button class="btn primary" id="btnDownloadJson" data-i18n="btn_download">Download JSON</button>
+            <button class="btn" id="btnCopyJson" data-i18n="btn_copy">Copy JSON</button>
           </div>
           <div class="hr"></div>
-          <p class="small muted">You can also import previously exported JSON:</p>
+          <p class="small muted" data-i18n="ex_import_p">You can also import previously exported JSON:</p>
           <div class="row">
             <input type="file" id="jsonFile" accept="application/json" />
-            <button class="btn" id="btnImportJson">Import</button>
+            <button class="btn" id="btnImportJson" data-i18n="btn_import">Import</button>
           </div>
-          <p class="footer">
+          <p class="footer" data-i18n="ex_privacy">
             Privacy: everything stays in your browser unless you export or copy it.
           </p>
         </div>
 
         <div class="card">
-          <h2>LLM helper (optional)</h2>
-          <p>
+          <h2 data-i18n="llm_h">LLM helper (optional)</h2>
+          <p data-i18n="llm_p">
             If you want AI interpretation, the safest static-site approach is:
             <b>copy your answers</b> and ask an LLM to summarize and map evidence to functions.
           </p>
           <div class="row">
-            <button class="btn primary" id="btnMakeLlmPrompt">Generate LLM prompt</button>
-            <button class="btn" id="btnCopyLlmPrompt">Copy prompt</button>
+            <button class="btn primary" id="btnMakeLlmPrompt" data-i18n="btn_make_prompt">Generate LLM prompt</button>
+            <button class="btn" id="btnCopyLlmPrompt" data-i18n="btn_copy_prompt">Copy prompt</button>
           </div>
-          <textarea id="llmPrompt" placeholder="Click “Generate LLM prompt” to create a structured prompt you can paste into ChatGPT."></textarea>
+          <textarea id="llmPrompt" data-i18n-placeholder="llm_placeholder" placeholder="Click “Generate LLM prompt” to create a structured prompt you can paste into ChatGPT."></textarea>
 
-          <div class="note warn" style="margin-top:10px;">
+          <div class="note warn" style="margin-top:10px;" data-i18n="llm_warn">
             Don’t paste private identifiers. LLMs can be persuasive even when wrong—use it as a “pattern mirror,” not truth.
           </div>
         </div>
@@ -520,153 +688,475 @@
 <div id="toast" class="toast"></div>
 
 <script>
-/** ---------------------------
- *  Data: Function prompts
- *  (From mbti-notes theory guide)
- *  --------------------------- */
+/* ---------------------------
+   i18n
+--------------------------- */
+const UI = {
+  en: {
+    title: "Dom/Aux + Tert/Inf Self-Check (Cognitive Functions)",
+    subtitle: "A self-reflection tool (static, runs fully in your browser). Uses open-ended examples + recurrence scoring, then matches your profile against standard 16-type function stacks. <span class='mono'>Not a diagnosis.</span>",
+    kpi_autosave: "Autosaves locally",
+    kpi_export: "Exports JSON + LLM prompt",
+    kpi_downweight: "Downweights “stress/grip” answers",
+
+    nav_instructions: "Instructions",
+    nav_questionnaire: "Questionnaire",
+    nav_results: "Results",
+    nav_export: "Export / LLM",
+    nav_reset: "Reset",
+
+    theme_light: "Light",
+    theme_dark: "Dark",
+
+    inst_h: "How to use this (so it actually works)",
+    inst_note: "For each prompt, write a <b>recurring real-life pattern</b> (ideally 2–3 instances across time). If it’s mostly a one-off, mark recurrence as “one-off” so it gets downweighted.",
+    inst_tip: "<b>Rating tip:</b> your slider is “how often this describes you across life,” not “can you do this sometimes?”",
+    inst_stress: "<b>Stress/grip checkbox:</b> if the behavior mainly appears when you’re stressed, check it. The tool will downweight it, because lower functions can spike under stress.",
+    inst_source: "Source inspiration: <span class='mono'>mbti-notes.tumblr.com/theory</span>. This tool is only a structured journaling assistant.",
+
+    btn_start: "Start the questionnaire",
+    btn_demo: "(Optional) Fill demo data",
+
+    meaning_h: "What “Dom/Aux/Tert/Inf” means (in this tool)",
+    meaning_p: "You’ll answer prompts for all eight functions. Then we:",
+    meaning_li1: "Compute an evidence score (0–100) per function.",
+    meaning_li2: "Match your scores to standard 16-type stacks (e.g., ISTJ = Si–Te–Fi–Ne).",
+    meaning_li3: "Show top candidate stacks + how your function scores support <b>Dom/Aux</b>, and whether <b>Tert/Inf</b> are plausibly lower.",
+    meaning_warn: "If your top 2 candidate stacks are close, re-check the “differentiators”: usually Aux and Tert (e.g., Te vs Fe, Ti vs Fi).",
+    meaning_footer: "This is <b>not</b> a scientific personality test. Treat as a guided reflection structure.",
+
+    q_h: "Questionnaire",
+    q_p: "For each function: (1) rate the “NOT dominant” anti-signs, then (2) answer the prompts with examples. Everything autosaves locally.",
+    q_hint: "You can compute anytime; you don’t need to finish all functions.",
+    btn_compute: "Compute results",
+
+    r_fn_h: "Your function evidence (ranked)",
+    r_type_h: "Best-matching stacks (Dom/Aux + Tert/Inf)",
+    confirm_h: "How to “confirm” Tert/Inf (practically)",
+    confirm_note: "Look for: (a) your Tert being “available but inconsistent,” and (b) your Inf being mostly “stress-activated” or hard to sustain. If your “Inferior” function scored high and you marked it as lifelong (not stress), that’s a flag that your dominant/aux guess may be wrong.",
+    confirm_p: "Use the “Export / LLM” tab if you want an LLM to summarize your examples and point out contradictions.",
+
+    ex_h: "Export your data",
+    ex_p: "Exports include all ratings + your written examples.",
+    btn_download: "Download JSON",
+    btn_copy: "Copy JSON",
+    ex_import_p: "You can also import previously exported JSON:",
+    btn_import: "Import",
+    ex_privacy: "Privacy: everything stays in your browser unless you export or copy it.",
+
+    llm_h: "LLM helper (optional)",
+    llm_p: "If you want AI interpretation, the safest static-site approach is: <b>copy your answers</b> and ask an LLM to summarize and map evidence to functions.",
+    btn_make_prompt: "Generate LLM prompt",
+    btn_copy_prompt: "Copy prompt",
+    llm_placeholder: "Click “Generate LLM prompt” to create a structured prompt you can paste into ChatGPT.",
+    llm_warn: "Don’t paste private identifiers. LLMs can be persuasive even when wrong—use it as a “pattern mirror,” not truth.",
+
+    // Dynamic strings
+    open_close: "Open / Close",
+    step12: "Step 1: rate anti-signs (“NOT dominant”). Step 2: answer prompts with recurring examples.",
+    anti_title: "Anti-signs (“NOT dominant”) — rate how often this describes you",
+    anti_sub: "These subtract from “dominant-likelihood” for this function.",
+    prompts_title: "Prompts — rate + recurrence + example",
+    prompts_sub: "Recurrence matters. Mark “one-off” if it’s not a stable pattern. Check “stress/grip” if it mainly happens under stress.",
+    frequency: "Frequency:",
+    recurrence: "Recurrence:",
+    stress: "Mostly under stress/grip",
+    oneoff: "one-off / rare",
+    repeated: "repeated pattern",
+    lifelong: "lifelong / very stable",
+    example_placeholder: "Write 2–3 real situations over time. What happened? What did you notice? What did you do? WHY did you do it?",
+
+    rating: ["Never","Rarely","Sometimes","Often","Almost always"],
+
+    results_top_functions: "Top functions:",
+    results_top_stack: "Top stack:",
+    results_fn_note: "These are evidence scores from your ratings + recurrence + stress flags + anti-signs.",
+    results_click: "Click a candidate below to see how your Dom/Aux/Tert/Inf scores line up.",
+    results_details: "Details",
+    results_close_call: "Close call.",
+    results_not_close: "Not close.",
+    results_recheck: "Your top 2 stacks are very close. Re-check these differentiator functions:",
+    results_ahead: "Your top stack is ahead by",
+    results_points: "points over #2. Still, confirm Tert/Inf by checking whether they feel less stable or more stress-activated.",
+
+    tbl_function: "Function",
+    tbl_evidence: "Evidence",
+    tbl_bar: "Bar",
+    tbl_notes: "Notes",
+
+    notes_examples_ok: "examples ok",
+    notes_antisigns: "anti-signs",
+
+    stack_alignment: "Stack alignment",
+    stack_alignment_note: "If your Inferior has high score and feels lifelong (not stress), your stack guess may be off.",
+    quick_verify: "Quick verify: does this position match your lived experience (automatic for Dom, supportive for Aux, inconsistent for Tert, stressy/awkward for Inf)?",
+    confirm_targeted: "Confirm Tert/Inf with targeted prompts",
+    confirm_targeted_note: "These are the most useful confirmation points—people often mistype because they only look at Dom/Aux.",
+    pick_1_2: "Pick 1–2 prompts below and check if your examples feel consistent and easy to sustain (higher) vs sporadic/stressy (lower).",
+    anti_example: "Anti-sign example:",
+    reset_confirm: "Reset all ratings and examples? This clears local data.",
+    reset_done: "Reset complete.",
+    copied: "Copied.",
+    copy_failed: "Copy failed.",
+    choose_json: "Choose a JSON file first.",
+    import_ok: "Import complete.",
+    import_fail: "Import failed: invalid JSON.",
+    demo_done: "Demo data filled.",
+    llm_generated: "LLM prompt generated."
+  },
+
+  vi: {
+    title: "Tự kiểm tra Dom/Aux + Tert/Inf (Chức năng nhận thức)",
+    subtitle: "Công cụ tự phản tư (chạy tĩnh trong trình duyệt). Dùng câu trả lời mở + độ lặp lại để chấm điểm, rồi so khớp với các “stack” chức năng của 16 kiểu. <span class='mono'>Không phải chẩn đoán.</span>",
+    kpi_autosave: "Tự lưu trên máy (local)",
+    kpi_export: "Xuất JSON + prompt cho LLM",
+    kpi_downweight: "Giảm trọng số câu trả lời khi stress/grip",
+
+    nav_instructions: "Hướng dẫn",
+    nav_questionnaire: "Bảng câu hỏi",
+    nav_results: "Kết quả",
+    nav_export: "Xuất / LLM",
+    nav_reset: "Xóa dữ liệu",
+
+    theme_light: "Sáng",
+    theme_dark: "Tối",
+
+    inst_h: "Cách dùng (để nó thực sự có ích)",
+    inst_note: "Với mỗi câu hỏi, hãy viết <b>một mẫu hành vi lặp lại trong đời thực</b> (tốt nhất 2–3 tình huống ở các thời điểm khác nhau). Nếu chủ yếu chỉ xảy ra một lần, hãy chọn “một lần/hiếm” để hệ thống giảm trọng số.",
+    inst_tip: "<b>Mẹo chấm:</b> thanh trượt là “mức độ đúng với bạn trong cuộc đời”, không phải “thỉnh thoảng bạn làm được không?”.",
+    inst_stress: "<b>Ô stress/grip:</b> nếu hành vi chủ yếu xuất hiện khi bạn căng thẳng, hãy tick. Hệ thống sẽ giảm trọng số vì chức năng thấp có thể “bùng lên” lúc stress.",
+    inst_source: "Nguồn cảm hứng: <span class='mono'>mbti-notes.tumblr.com/theory</span>. Công cụ này chỉ giúp bạn ghi chép có cấu trúc.",
+
+    btn_start: "Bắt đầu trả lời",
+    btn_demo: "(Tùy chọn) Điền dữ liệu mẫu",
+
+    meaning_h: "“Dom/Aux/Tert/Inf” nghĩa là gì (trong công cụ này)",
+    meaning_p: "Bạn trả lời cho cả 8 chức năng. Sau đó hệ thống:",
+    meaning_li1: "Tính điểm bằng chứng (0–100) cho mỗi chức năng.",
+    meaning_li2: "So khớp điểm với các stack chuẩn của 16 kiểu (vd. ISTJ = Si–Te–Fi–Ne).",
+    meaning_li3: "Hiển thị các stack phù hợp nhất + cách điểm của bạn hỗ trợ <b>Dom/Aux</b>, và liệu <b>Tert/Inf</b> có hợp lý là thấp hơn không.",
+    meaning_warn: "Nếu top 2 stack quá sát nhau, hãy xem lại các “điểm phân biệt”: thường là Aux và Tert (vd. Te vs Fe, Ti vs Fi).",
+    meaning_footer: "Đây <b>không</b> phải bài test khoa học. Hãy coi như khung tự phản tư có hướng dẫn.",
+
+    q_h: "Bảng câu hỏi",
+    q_p: "Với mỗi chức năng: (1) chấm “dấu hiệu KHÔNG phải dominant”, rồi (2) trả lời bằng ví dụ đời thực. Tất cả tự lưu trên máy.",
+    q_hint: "Bạn có thể tính kết quả bất cứ lúc nào; không cần trả lời hết.",
+    btn_compute: "Tính kết quả",
+
+    r_fn_h: "Điểm bằng chứng theo chức năng (xếp hạng)",
+    r_type_h: "Stack phù hợp nhất (Dom/Aux + Tert/Inf)",
+    confirm_h: "Cách “xác nhận” Tert/Inf (thực tế)",
+    confirm_note: "Gợi ý: (a) Tert thường “có nhưng không ổn định”, (b) Inf hay “kích hoạt khi stress” hoặc khó duy trì. Nếu “Inferior” của bạn điểm rất cao và bạn đánh dấu là lâu dài (không phải stress) thì có thể đoán Dom/Aux đang sai.",
+    confirm_p: "Dùng tab “Xuất / LLM” nếu bạn muốn LLM tóm tắt ví dụ và chỉ ra mâu thuẫn.",
+
+    ex_h: "Xuất dữ liệu",
+    ex_p: "Xuất gồm điểm + toàn bộ ví dụ bạn viết.",
+    btn_download: "Tải JSON",
+    btn_copy: "Sao chép JSON",
+    ex_import_p: "Bạn cũng có thể nhập JSON đã xuất trước đó:",
+    btn_import: "Nhập",
+    ex_privacy: "Riêng tư: mọi thứ ở trong trình duyệt trừ khi bạn xuất hoặc sao chép.",
+
+    llm_h: "Hỗ trợ LLM (tùy chọn)",
+    llm_p: "Nếu muốn AI diễn giải, cách an toàn nhất với trang tĩnh là: <b>sao chép câu trả lời</b> rồi hỏi LLM tóm tắt và map bằng chứng vào các chức năng.",
+    btn_make_prompt: "Tạo prompt cho LLM",
+    btn_copy_prompt: "Sao chép prompt",
+    llm_placeholder: "Bấm “Tạo prompt cho LLM” để tạo prompt có cấu trúc và dán vào ChatGPT.",
+    llm_warn: "Đừng dán thông tin định danh riêng tư. LLM có thể nói rất thuyết phục dù sai—hãy dùng như “gương soi mẫu hành vi”, không phải chân lý.",
+
+    open_close: "Mở / Đóng",
+    step12: "Bước 1: chấm “KHÔNG dominant”. Bước 2: trả lời bằng ví dụ lặp lại.",
+    anti_title: "Dấu hiệu “KHÔNG dominant” — chấm mức độ đúng",
+    anti_sub: "Các mục này sẽ trừ điểm “khả năng dominant” của chức năng.",
+    prompts_title: "Câu hỏi — chấm + độ lặp lại + ví dụ",
+    prompts_sub: "Độ lặp lại rất quan trọng. Chọn “một lần/hiếm” nếu không ổn định. Tick “stress/grip” nếu chủ yếu xảy ra khi căng thẳng.",
+    frequency: "Tần suất:",
+    recurrence: "Độ lặp lại:",
+    stress: "Chủ yếu khi stress/grip",
+    oneoff: "một lần / hiếm",
+    repeated: "lặp lại",
+    lifelong: "lâu dài / ổn định",
+    example_placeholder: "Viết 2–3 tình huống thật theo thời gian. Chuyện gì xảy ra? Bạn để ý gì? Bạn làm gì? VÌ SAO bạn làm vậy?",
+
+    rating: ["Không bao giờ","Hiếm khi","Thỉnh thoảng","Thường xuyên","Gần như luôn"],
+
+    results_top_functions: "Chức năng nổi bật:",
+    results_top_stack: "Stack #1:",
+    results_fn_note: "Điểm bằng chứng được tính từ tần suất + độ lặp lại + stress + anti-sign.",
+    results_click: "Bấm “Chi tiết” để xem Dom/Aux/Tert/Inf khớp thế nào.",
+    results_details: "Chi tiết",
+    results_close_call: "Rất sát.",
+    results_not_close: "Khá rõ.",
+    results_recheck: "Top 2 stack rất gần nhau. Hãy xem lại các chức năng phân biệt:",
+    results_ahead: "Stack #1 hơn",
+    results_points: "điểm so với #2. Vẫn nên xác nhận Tert/Inf bằng cách xem chúng có khó duy trì hoặc dễ “bật” khi stress không.",
+
+    tbl_function: "Chức năng",
+    tbl_evidence: "Điểm",
+    tbl_bar: "Thanh",
+    tbl_notes: "Ghi chú",
+
+    notes_examples_ok: "ví dụ đủ",
+    notes_antisigns: "anti-sign",
+
+    stack_alignment: "Mức độ khớp stack",
+    stack_alignment_note: "Nếu Inferior điểm cao và bạn thấy nó ổn định lâu dài (không phải stress), có thể bạn đang đoán sai stack.",
+    quick_verify: "Kiểm nhanh: vị trí này có đúng trải nghiệm của bạn không (Dom tự động, Aux hỗ trợ, Tert lúc có lúc không, Inf gượng/đến khi stress)?",
+    confirm_targeted: "Xác nhận Tert/Inf bằng câu hỏi trọng tâm",
+    confirm_targeted_note: "Đây là phần hữu ích nhất—nhiều người mistype vì chỉ nhìn Dom/Aux.",
+    pick_1_2: "Chọn 1–2 câu dưới đây và xem ví dụ của bạn có ổn định/dễ duy trì (cao) hay rời rạc/stress (thấp).",
+    anti_example: "Ví dụ anti-sign:",
+    reset_confirm: "Xóa toàn bộ điểm và ví dụ? (Dữ liệu local sẽ bị xóa.)",
+    reset_done: "Đã xóa xong.",
+    copied: "Đã sao chép.",
+    copy_failed: "Không sao chép được.",
+    choose_json: "Hãy chọn file JSON trước.",
+    import_ok: "Nhập xong.",
+    import_fail: "Nhập thất bại: JSON không hợp lệ.",
+    demo_done: "Đã điền dữ liệu mẫu.",
+    llm_generated: "Đã tạo prompt."
+  }
+};
+
+let lang = localStorage.getItem("lang") || "en";
+
+function tr(key){
+  const pack = UI[lang] || UI.en;
+  return (pack && pack[key] != null) ? pack[key] : (UI.en[key] != null ? UI.en[key] : key);
+}
+
+function applyI18n(){
+  document.documentElement.lang = (lang === "vi") ? "vi" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    const val = tr(key);
+    // allow HTML in some strings
+    if (typeof val === "string" && val.includes("<")) el.innerHTML = val;
+    else el.textContent = val;
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key = el.getAttribute("data-i18n-placeholder");
+    el.setAttribute("placeholder", tr(key));
+  });
+}
+
+function ratingLabel(n){
+  const arr = tr("rating");
+  return (Array.isArray(arr) ? arr : UI.en.rating)[Number(n)||0];
+}
+
+/* ---------------------------
+   Theme
+--------------------------- */
+function applyTheme(theme){
+  const t = (theme === "dark") ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("theme", t);
+  const sw = document.getElementById("themeSwitch");
+  if (sw) sw.checked = (t === "dark");
+}
+
+/* ---------------------------
+   Data: Function prompts (EN + VI)
+--------------------------- */
 const QUESTION_BANK = {
   Si: {
-    title: "Introverted Sensing (Si)",
-    kind: "Perceiving • Introverted",
+    title: {en:"Introverted Sensing (Si)", vi:"Cảm giác hướng nội (Si)"},
+    kind: {en:"Perceiving • Introverted", vi:"Nhận thức • Hướng nội"},
     notDominant: [
-      "careless with details; dislikes procedure; averse to authority",
-      "easily embraces novelty, risk, big ideas, or sudden change",
-      "doesn’t value or easily dismisses past learning/experience",
-      "often exhibits impractical/unrealistic/speculative attitude"
+      {en:"careless with details; dislikes procedure; averse to authority", vi:"cẩu thả với chi tiết; ghét quy trình; khó chịu với thẩm quyền"},
+      {en:"easily embraces novelty, risk, big ideas, or sudden change", vi:"dễ ôm lấy cái mới/rủi ro/ý tưởng lớn/thay đổi đột ngột"},
+      {en:"doesn’t value or easily dismisses past learning/experience", vi:"không coi trọng hoặc dễ phủ nhận kinh nghiệm/học hỏi quá khứ"},
+      {en:"often exhibits impractical/unrealistic/speculative attitude", vi:"thường thiên về suy đoán/không thực tế/phi hiện thực"}
     ],
     prompts: [
-      "Do you feel most at ease when sensory details match your expectations? Flip: are you easily thrown by physical discomfort, inconsistent sensory details, or unfamiliar environments—especially without “proper” procedures?",
-      "Is it important to proceed cautiously in unfamiliar situations—relying on established steps/rules/methods and seeing untested approaches as risky?",
-      "Are you a creature of habit who finds comfort in a set routine—and reacts negatively/resistantly when it’s disrupted?",
-      "When low, do you harp on little details, complain that things aren’t as they should be, or contrast the present negatively with positive past experiences? Does precedent strongly influence decisions?",
-      "Do you often dislike people who seem vague, impractical, ungrounded, inconsistent, irresponsible, careless, oblivious, bombastic?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): slow, boring, conventional, closed-minded, unadventurous, finicky, worrywart, inflexible, oversensitive to minor discomforts?"
+      {en:"Do you feel most at ease when sensory details match your expectations? Flip: are you easily thrown by physical discomfort, inconsistent sensory details, or unfamiliar environments—especially without “proper” procedures?",
+       vi:"Bạn thấy thoải mái nhất khi các chi tiết giác quan đúng “kỳ vọng” của bạn không? Mặt ngược: bạn dễ bị xáo trộn bởi khó chịu cơ thể, chi tiết không nhất quán, hoặc môi trường lạ—đặc biệt khi bạn không biết “cách làm đúng/quy trình đúng” để theo?"},
+      {en:"Is it important to proceed cautiously in unfamiliar situations—relying on established steps/rules/methods and seeing untested approaches as risky?",
+       vi:"Trong tình huống mới/lạ, bạn có coi trọng việc đi từng bước cẩn thận—dựa vào quy tắc/phương pháp đã học/đã được chứng minh, và xem cách mới/chưa thử là rủi ro không?"},
+      {en:"Are you a creature of habit who finds comfort in a set routine—and reacts negatively/resistantly when it’s disrupted?",
+       vi:"Bạn có “ưa thói quen”, thấy yên tâm khi có lịch trình/routine khá cố định—và phản ứng ban đầu thường tiêu cực/kháng cự khi bị phá vỡ không?"},
+      {en:"When low, do you harp on little details, complain that things aren’t as they should be, or contrast the present negatively with positive past experiences? Does precedent strongly influence decisions?",
+       vi:"Khi tâm trạng xuống, bạn có hay bám vào tiểu tiết, than phiền ‘đáng lẽ phải như thế’, hoặc so sánh hiện tại theo hướng tiêu cực với ký ức quá khứ tốt đẹp? Tiền lệ/quá khứ có ảnh hưởng mạnh tới quyết định của bạn không?"},
+      {en:"Do you often dislike people who seem vague, impractical, ungrounded, inconsistent, irresponsible, careless, oblivious, bombastic?",
+       vi:"Bạn có hay không thích người bị bạn thấy là: mơ hồ, thiếu thực tế, không ‘chạm đất’, thất thường, vô trách nhiệm, cẩu thả, vô ý, khoa trương không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): slow, boring, conventional, closed-minded, unadventurous, finicky, worrywart, inflexible, oversensitive to minor discomforts?",
+       vi:"Bạn có thường được nhận xét (hoặc nhạy cảm khi bị gắn nhãn): chậm, chán, truyền thống, bảo thủ, không thích phiêu lưu, khó tính, hay lo, cứng nhắc, quá nhạy với khó chịu nhỏ của cơ thể?"}
     ]
   },
+
   Ni: {
-    title: "Introverted Intuition (Ni)",
-    kind: "Perceiving • Introverted",
+    title: {en:"Introverted Intuition (Ni)", vi:"Trực giác hướng nội (Ni)"},
+    kind: {en:"Perceiving • Introverted", vi:"Nhận thức • Hướng nội"},
     notDominant: [
-      "not contemplative; doesn’t speculate about how things will go",
-      "no sense of aspiration; doesn’t think about calling/purpose/direction",
-      "doesn’t require structure; happy to live by whims/urges",
-      "literal; likes handling details; enjoys mundane conversation"
+      {en:"not contemplative; doesn’t speculate about how things will go", vi:"không hay suy ngẫm; ít suy đoán ‘rồi sẽ ra sao’"},
+      {en:"no sense of aspiration; doesn’t think about calling/purpose/direction", vi:"không thấy khát vọng; ít nghĩ về mục đích/định hướng/sứ mệnh"},
+      {en:"doesn’t require structure; happy to live by whims/urges", vi:"không cần cấu trúc; sống theo hứng/ham muốn cũng ổn"},
+      {en:"literal; likes handling details; enjoys mundane conversation", vi:"thiên về nghĩa đen; thích xử lý chi tiết; thích chuyện thường ngày"}
     ],
     prompts: [
-      "Do you feel best with a strong sense of purpose? Flip: do you feel uneasy/adrift without a significant aim?",
-      "Is it important to understand the “grand scheme”? Do you synthesize information into underlying essence or future implications—and struggle to decide without a guiding principle?",
-      "Do you often visualize an “ideal” state and delay gratification for it? Are you prone to perfectionism/controlling tendencies in pursuit of an ideal?",
-      "When low, do you judge life as shallow/meaningless, and suffer when the future seems uncertain/negative/below expectation?",
-      "Do you often dislike people who seem self-limiting, narrow-minded, shallow, shortsighted, brash, fickle?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): vague, unrealistic, too intense/extreme, overserious, overthinking, hard to know, demanding/hard to please?"
+      {en:"Do you feel best with a strong sense of purpose? Flip: do you feel uneasy/adrift without a significant aim?",
+       vi:"Bạn thấy tốt nhất khi có cảm giác mục đích rõ ràng không? Mặt ngược: nếu thiếu mục tiêu quan trọng, bạn có thấy bất an/lạc hướng không?"},
+      {en:"Is it important to understand the “grand scheme”? Do you synthesize information into underlying essence or future implications—and struggle to decide without a guiding principle?",
+       vi:"Bạn có cần hiểu ‘bức tranh lớn’ không? Bạn có hay chắt lọc thông tin thành ‘cốt lõi’ hoặc hàm ý tương lai—và khó quyết khi thiếu một nguyên tắc dẫn đường không?"},
+      {en:"Do you often visualize an “ideal” state and delay gratification for it? Are you prone to perfectionism/controlling tendencies in pursuit of an ideal?",
+       vi:"Bạn có hay hình dung một trạng thái ‘lý tưởng’ và sẵn sàng trì hoãn thỏa mãn để đạt nó không? Bạn có xu hướng cầu toàn/kiểm soát để theo đuổi lý tưởng không?"},
+      {en:"When low, do you judge life as shallow/meaningless, and suffer when the future seems uncertain/negative/below expectation?",
+       vi:"Khi xuống tinh thần, bạn có hay thấy cuộc sống nông/thiếu ý nghĩa, và khổ sở khi tương lai mờ mịt/tiêu cực/không như kỳ vọng không?"},
+      {en:"Do you often dislike people who seem self-limiting, narrow-minded, shallow, shortsighted, brash, fickle?",
+       vi:"Bạn có hay không thích người bị bạn thấy là: tự giới hạn, hẹp hòi, nông, thiển cận, bốc đồng, thất thường không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): vague, unrealistic, too intense/extreme, overserious, overthinking, hard to know, demanding/hard to please?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): mơ hồ, phi thực tế, quá cực đoan/‘nặng’, quá nghiêm, suy nghĩ quá nhiều, khó hiểu, khó chiều/đòi hỏi cao không?"}
     ]
   },
+
   Se: {
-    title: "Extraverted Sensing (Se)",
-    kind: "Perceiving • Extraverted",
+    title: {en:"Extraverted Sensing (Se)", vi:"Cảm giác hướng ngoại (Se)"},
+    kind: {en:"Perceiving • Extraverted", vi:"Nhận thức • Hướng ngoại"},
     notDominant: [
-      "dislikes or has low tolerance for physical/sensory stimulation",
-      "often contemplates implications/contingencies/deeper meaning",
-      "likes/needs rules; respects authority; avoids risky behavior",
-      "chases random/impractical ideas; ignores concrete evidence"
+      {en:"dislikes or has low tolerance for physical/sensory stimulation", vi:"không thích hoặc chịu kém kích thích giác quan"},
+      {en:"often contemplates implications/contingencies/deeper meaning", vi:"hay nghĩ về hàm ý/khả năng/ý nghĩa sâu"},
+      {en:"likes/needs rules; respects authority; avoids risky behavior", vi:"thích/cần quy tắc; tôn trọng thẩm quyền; tránh rủi ro"},
+      {en:"chases random/impractical ideas; ignores concrete evidence", vi:"đuổi theo ý tưởng ngẫu nhiên/phi thực tế; bỏ qua bằng chứng cụ thể"}
     ],
     prompts: [
-      "Do you have high tolerance for excitement and seek engaging/stimulating activities? Flip: do you suffer boredom/restlessness/FOMO when little is happening?",
-      "Is it important to quickly join/participate without hesitation—prioritizing fun/pleasure? Is your initial reaction to restrictions usually defiance?",
-      "Are you playful, spontaneous, open to new situations, naturally saying “yes” to invitations—and enjoy future uncertainty as a surprise?",
-      "When low, do you seek physical distraction/sensory pleasure or create drama/excitement? Does sitting still too long to look within feel dreadful?",
-      "Do you often dislike people who seem “all talk no action,” overcomplicated, timid, conventional, inhibited, uptight?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): impulsive, superficial, loud/showboat, aimless, childish, not serious?"
+      {en:"Do you have high tolerance for excitement and seek engaging/stimulating activities? Flip: do you suffer boredom/restlessness/FOMO when little is happening?",
+       vi:"Bạn có chịu được kích thích cao và thích hoạt động hấp dẫn/kích thích không? Mặt ngược: khi ít ‘có gì đó’, bạn có dễ chán/bồn chồn/FOMO không?"},
+      {en:"Is it important to quickly join/participate without hesitation—prioritizing fun/pleasure? Is your initial reaction to restrictions usually defiance?",
+       vi:"Bạn có coi trọng việc tham gia ngay, ít do dự—ưu tiên vui thích/trải nghiệm không? Khi bị hạn chế, phản ứng ban đầu của bạn thường là chống lại không?"},
+      {en:"Are you playful, spontaneous, open to new situations, naturally saying “yes” to invitations—and enjoy future uncertainty as a surprise?",
+       vi:"Bạn có vui tính, tự phát, mở với tình huống mới, tự nhiên hay nói ‘đi chứ!’—và thấy sự bất định tương lai như một điều thú vị/bất ngờ không?"},
+      {en:"When low, do you seek physical distraction/sensory pleasure or create drama/excitement? Does sitting still too long to look within feel dreadful?",
+       vi:"Khi xuống tinh thần, bạn có hay tìm ‘xả’ bằng kích thích cơ thể/niềm vui giác quan hoặc tạo kịch tính/sôi động? Việc ngồi yên quá lâu để nhìn vào bên trong có khiến bạn khó chịu không?"},
+      {en:"Do you often dislike people who seem “all talk no action,” overcomplicated, timid, conventional, inhibited, uptight?",
+       vi:"Bạn có hay không thích người ‘nói nhiều làm ít’, quá rườm rà, nhút nhát, quá truyền thống, bị ức chế, căng cứng không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): impulsive, superficial, loud/showboat, aimless, childish, not serious?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): bốc đồng, hời hợt, ồn/‘làm màu’, thiếu mục tiêu, trẻ con, không nghiêm túc không?"}
     ]
   },
+
   Ne: {
-    title: "Extraverted Intuition (Ne)",
-    kind: "Perceiving • Extraverted",
+    title: {en:"Extraverted Intuition (Ne)", vi:"Trực giác hướng ngoại (Ne)"},
+    kind: {en:"Perceiving • Extraverted", vi:"Nhận thức • Hướng ngoại"},
     notDominant: [
-      "rarely has new ideas; refuses to entertain possibilities",
-      "enjoys routine, repetitive practice, logistical planning",
-      "must think through every contingency before acting",
-      "unwillingness to dream big; no knack for big-picture thinking"
+      {en:"rarely has new ideas; refuses to entertain possibilities", vi:"hiếm khi có ý tưởng mới; không thích xét khả năng"},
+      {en:"enjoys routine, repetitive practice, logistical planning", vi:"thích routine/luyện tập lặp lại/lập kế hoạch logistics"},
+      {en:"must think through every contingency before acting", vi:"phải nghĩ hết mọi khả năng trước khi làm"},
+      {en:"unwillingness to dream big; no knack for big-picture thinking", vi:"không thích mơ lớn; yếu ‘bức tranh lớn’"}
     ],
     prompts: [
-      "Is your mind full of diverse ideas/dreams you want to pursue? Flip: do you feel frustrated when your ideas are dismissed or can’t be realized?",
-      "Is it important to be open-minded/resourceful, generating new ideas/solutions—and viewing old methods as stale/ineffective?",
-      "Are you optimistic/encouraging, perking up at interesting possibilities—loving brainstorming with people?",
-      "When low, do you fight off hopelessness/pessimism? Does feeling stuck (little possibility for change) feel dire?",
-      "Do you often dislike people who seem unimaginative, conventional/traditional, nitpicky/rigid, too literal, pessimistic?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): scattered, unreliable, inconsistent, careless, irresponsible, manipulative (getting others to handle details)?"
+      {en:"Is your mind full of diverse ideas/dreams you want to pursue? Flip: do you feel frustrated when your ideas are dismissed or can’t be realized?",
+       vi:"Đầu bạn có đầy ý tưởng/ước mơ đa dạng muốn theo đuổi không? Mặt ngược: khi ý tưởng bị gạt đi hoặc không thể thực hiện, bạn có bực bội không?"},
+      {en:"Is it important to be open-minded/resourceful, generating new ideas/solutions—and viewing old methods as stale/ineffective?",
+       vi:"Bạn có coi trọng việc cởi mở/linh hoạt, nảy ra ý tưởng/giải pháp mới—và xem cách cũ là nhàm/không hiệu quả không?"},
+      {en:"Are you optimistic/encouraging, perking up at interesting possibilities—loving brainstorming with people?",
+       vi:"Bạn có lạc quan/khích lệ, ‘bừng lên’ khi thấy khả năng thú vị—và thích brainstorm với người khác không?"},
+      {en:"When low, do you fight off hopelessness/pessimism? Does feeling stuck (little possibility for change) feel dire?",
+       vi:"Khi xuống tinh thần, bạn có hay chống lại cảm giác bi quan/tuyệt vọng? Cảm giác ‘kẹt’ (ít khả năng thay đổi) có khiến bạn thấy rất tệ không?"},
+      {en:"Do you often dislike people who seem unimaginative, conventional/traditional, nitpicky/rigid, too literal, pessimistic?",
+       vi:"Bạn có hay không thích người thiếu tưởng tượng, quá truyền thống, soi mói/cứng nhắc, quá literal, bi quan không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): scattered, unreliable, inconsistent, careless, irresponsible, manipulative (getting others to handle details)?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): phân tán, không đáng tin, thất thường, cẩu thả, vô trách nhiệm, ‘đẩy’ người khác lo chi tiết không?"}
     ]
   },
+
   Ti: {
-    title: "Introverted Thinking (Ti)",
-    kind: "Judging • Introverted",
+    title: {en:"Introverted Thinking (Ti)", vi:"Tư duy hướng nội (Ti)"},
+    kind: {en:"Judging • Introverted", vi:"Phán đoán • Hướng nội"},
     notDominant: [
-      "isn’t aware of or doesn’t care about logical fallacies/contradictions",
-      "wary of criticism or feeling challenged/invalidated by others",
-      "relies heavily on routine/order/structure/organizing to function",
-      "easily confused; often suffers conflicted feelings/emotions"
+      {en:"isn’t aware of or doesn’t care about logical fallacies/contradictions", vi:"ít để ý/không quan tâm lỗi logic/mâu thuẫn"},
+      {en:"wary of criticism or feeling challenged/invalidated by others", vi:"sợ bị phê bình hoặc bị thách thức/phủ nhận"},
+      {en:"relies heavily on routine/order/structure/organizing to function", vi:"phụ thuộc mạnh vào routine/trật tự/cấu trúc/tổ chức để vận hành"},
+      {en:"easily confused; often suffers conflicted feelings/emotions", vi:"dễ rối; hay bị cảm xúc mâu thuẫn kéo đi"}
     ],
     prompts: [
-      "Do you have a technical mind—troubleshooting with precision? Flip: do you get confused by situations defying simple mechanisms/formulas?",
-      "Is it important to handle problems on your own—keeping things clear/simple? Are “complications” met with confusion or curiosity?",
-      "Are you straightforward, factual, private about interests, and stay out of situations that don’t involve you—finding it hard to understand why people get worked up over inconsequential things?",
-      "When low, do you get stuck on a particular problem or bored without stimulation—and feel reinvigorated by mastering a skill or setting a challenge?",
-      "Do you often dislike people who seem dogmatic/ideological, irrational, manipulative, overemotional, unwilling to admit errors?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): indifferent, asocial, emotionally distant/unavailable, awkward, arrogant, inconsiderate?"
+      {en:"Do you have a technical mind—troubleshooting with precision? Flip: do you get confused by situations defying simple mechanisms/formulas?",
+       vi:"Bạn có đầu óc kỹ thuật—hay ‘bắt bệnh’ và sửa lỗi rất chính xác không? Mặt ngược: bạn có rối khi gặp thứ không theo cơ chế/công thức đơn giản không?"},
+      {en:"Is it important to handle problems on your own—keeping things clear/simple? Are “complications” met with confusion or curiosity?",
+       vi:"Bạn có coi trọng việc tự xử lý vấn đề—giữ mọi thứ rõ ràng/đơn giản không? Khi có ‘phức tạp’, bạn thấy rối hay thấy tò mò?"},
+      {en:"Are you straightforward, factual, private about interests, and stay out of situations that don’t involve you—finding it hard to understand why people get worked up over inconsequential things?",
+       vi:"Bạn có thẳng thắn, dựa trên sự thật, khá riêng tư về sở thích, và tránh chuyện không liên quan—khó hiểu vì sao người ta ‘làm quá’ những chuyện nhỏ không?"},
+      {en:"When low, do you get stuck on a particular problem or bored without stimulation—and feel reinvigorated by mastering a skill or setting a challenge?",
+       vi:"Khi xuống tinh thần, bạn có bị mắc kẹt vào một bài toán hoặc chán khi thiếu kích thích—và thấy ‘hồi’ lại khi làm chủ một kỹ năng hoặc tự đặt thử thách?"},
+      {en:"Do you often dislike people who seem dogmatic/ideological, irrational, manipulative, overemotional, unwilling to admit errors?",
+       vi:"Bạn có hay không thích người giáo điều/ý thức hệ, phi lý, thao túng, quá cảm xúc, không chịu nhận sai không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): indifferent, asocial, emotionally distant/unavailable, awkward, arrogant, inconsiderate?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): thờ ơ, ít xã giao, lạnh/xa cảm xúc, vụng về, kiêu, thiếu tinh tế không?"}
     ]
   },
+
   Fi: {
-    title: "Introverted Feeling (Fi)",
-    kind: "Judging • Introverted",
+    title: {en:"Introverted Feeling (Fi)", vi:"Cảm xúc hướng nội (Fi)"},
+    kind: {en:"Judging • Introverted", vi:"Phán đoán • Hướng nội"},
     notDominant: [
-      "weak sense of identity; weak preferences/attachments; fuzzy values",
-      "not very affected by the personal; can function fine even if unhappy",
-      "wary of emotional intensity; must justify strong feelings/opinions",
-      "poor emotional awareness; believes feelings are biased/unreliable"
+      {en:"weak sense of identity; weak preferences/attachments; fuzzy values", vi:"cảm giác bản sắc yếu; sở thích/gắn bó yếu; giá trị mơ hồ"},
+      {en:"not very affected by the personal; can function fine even if unhappy", vi:"ít bị ảnh hưởng bởi ‘cá nhân’; vẫn hoạt động được dù không vui"},
+      {en:"wary of emotional intensity; must justify strong feelings/opinions", vi:"ngại cảm xúc mạnh; phải ‘lý giải’ trước khi tin cảm xúc/ý kiến mạnh"},
+      {en:"poor emotional awareness; believes feelings are biased/unreliable", vi:"nhận biết cảm xúc kém; cho rằng cảm xúc thiên lệch/không đáng tin"}
     ],
     prompts: [
-      "Do your feelings strongly inform your attitude, preferences, and decisions? Flip: is it extremely hard to ignore feelings or go against them?",
-      "Is it important to honor your feelings/values in everything? Do you get offended by environments that don’t honor uniqueness—seeing impersonal settings as “soulless” and wanting to disrupt status quo?",
-      "Are you always in touch with how you feel and enjoy creative expression of feelings—linking feeling to humanity?",
-      "When low, do you feel alienated and need lots of alone time to nurse feelings—struggling to be productive until emotionally settled?",
-      "Do you often dislike people who seem conforming/by-the-book, inauthentic, intrusive, disrespectful, unfeeling, amoral?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): oversensitive, self-righteous, moralizing, fragile, unconfident, hard to reason with?"
+      {en:"Do your feelings strongly inform your attitude, preferences, and decisions? Flip: is it extremely hard to ignore feelings or go against them?",
+       vi:"Cảm xúc của bạn có ảnh hưởng mạnh đến thái độ, sở thích, quyết định không? Mặt ngược: bạn có thấy cực khó khi bỏ qua cảm xúc hoặc làm ngược lại cảm xúc không?"},
+      {en:"Is it important to honor your feelings/values in everything? Do you get offended by environments that don’t honor uniqueness—seeing impersonal settings as “soulless” and wanting to disrupt status quo?",
+       vi:"Bạn có coi trọng việc tôn trọng cảm xúc/giá trị của mình trong mọi thứ không? Bạn có khó chịu với môi trường không tôn trọng sự khác biệt—thấy nơi quá vô danh là ‘vô hồn’ và muốn phá vỡ hiện trạng không?"},
+      {en:"Are you always in touch with how you feel and enjoy creative expression of feelings—linking feeling to humanity?",
+       vi:"Bạn có luôn ‘chạm’ được cảm xúc của mình và thích biểu đạt sáng tạo—coi cảm xúc là phần cốt lõi của con người không?"},
+      {en:"When low, do you feel alienated and need lots of alone time to nurse feelings—struggling to be productive until emotionally settled?",
+       vi:"Khi xuống tinh thần, bạn có thấy lạc lõng và cần ở một mình nhiều để ‘ôm’ cảm xúc—khó làm việc hiệu quả cho đến khi cảm xúc ổn lại?"},
+      {en:"Do you often dislike people who seem conforming/by-the-book, inauthentic, intrusive, disrespectful, unfeeling, amoral?",
+       vi:"Bạn có hay không thích người rập khuôn/đúng quy trình, giả tạo, xâm phạm, thiếu tôn trọng, vô cảm, vô đạo đức không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): oversensitive, self-righteous, moralizing, fragile, unconfident, hard to reason with?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): quá nhạy cảm, tự cho mình đúng, đạo đức hóa, mong manh, thiếu tự tin, khó lý luận không?"}
     ]
   },
+
   Te: {
-    title: "Extraverted Thinking (Te)",
-    kind: "Judging • Extraverted",
+    title: {en:"Extraverted Thinking (Te)", vi:"Tư duy hướng ngoại (Te)"},
+    kind: {en:"Judging • Extraverted", vi:"Phán đoán • Hướng ngoại"},
     notDominant: [
-      "passive; not a natural doer/leader/organizer/planner",
-      "convoluted, unconfident, or indecisive speech/thinking",
-      "hesitant/slow to judge/conclude/solve/finish",
-      "torn about whether stating facts might hurt"
+      {en:"passive; not a natural doer/leader/organizer/planner", vi:"thụ động; không tự nhiên là người làm/lead/tổ chức/lập kế hoạch"},
+      {en:"convoluted, unconfident, or indecisive speech/thinking", vi:"nói/nghĩ vòng vo, thiếu tự tin hoặc khó quyết"},
+      {en:"hesitant/slow to judge/conclude/solve/finish", vi:"chần chừ/chậm kết luận/giải quyết/hoàn tất"},
+      {en:"torn about whether stating facts might hurt", vi:"lăn tăn vì nói thẳng sự thật có thể làm ai đó đau"}
     ],
     prompts: [
-      "Do you prize efficiency and goal-setting? Flip: does it bother you when problems remain unresolved and nobody takes charge?",
-      "Is it important to change what doesn’t work, resolve problems quickly/cleanly, avert disasters—and thrive in challenging/competitive environments?",
-      "Are you tough-minded, advising others to work smart and be sensible—struggling to understand “irrational/unproductive” decisions?",
-      "When low, do you feel better by organizing, leading, strategizing, and problem-solving your way back on track?",
-      "Do you often dislike people who seem lazy, indecisive, incompetent, melodramatic, oversensitive, sentimental?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): blunt, judgmental, domineering, overconfident, unfeeling, bad listener?"
+      {en:"Do you prize efficiency and goal-setting? Flip: does it bother you when problems remain unresolved and nobody takes charge?",
+       vi:"Bạn có coi trọng hiệu quả và đặt mục tiêu không? Mặt ngược: bạn có khó chịu khi vấn đề không được giải quyết và không ai đứng ra chịu trách nhiệm không?"},
+      {en:"Is it important to change what doesn’t work, resolve problems quickly/cleanly, avert disasters—and thrive in challenging/competitive environments?",
+       vi:"Bạn có coi trọng việc sửa cái không hoạt động, giải quyết nhanh-gọn, phòng rủi ro—và thấy mình hợp môi trường thách thức/cạnh tranh không?"},
+      {en:"Are you tough-minded, advising others to work smart and be sensible—struggling to understand “irrational/unproductive” decisions?",
+       vi:"Bạn có tư duy ‘cứng’, hay khuyên người khác làm việc thông minh/thực tế—khó hiểu các quyết định ‘phi lý/không hiệu quả’ không?"},
+      {en:"When low, do you feel better by organizing, leading, strategizing, and problem-solving your way back on track?",
+       vi:"Khi xuống tinh thần, bạn có thấy tốt hơn nếu quay lại bằng cách tổ chức, lead, lập chiến lược và giải quyết vấn đề để ‘về guồng’ không?"},
+      {en:"Do you often dislike people who seem lazy, indecisive, incompetent, melodramatic, oversensitive, sentimental?",
+       vi:"Bạn có hay không thích người lười, thiếu quyết đoán, kém năng lực, kịch tính, quá nhạy cảm, quá cảm tính không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): blunt, judgmental, domineering, overconfident, unfeeling, bad listener?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): thẳng quá, hay phán xét, áp đặt, quá tự tin, vô cảm, nghe kém không?"}
     ]
   },
+
   Fe: {
-    title: "Extraverted Feeling (Fe)",
-    kind: "Judging • Extraverted",
+    title: {en:"Extraverted Feeling (Fe)", vi:"Cảm xúc hướng ngoại (Fe)"},
+    kind: {en:"Judging • Extraverted", vi:"Phán đoán • Hướng ngoại"},
     notDominant: [
-      "no awareness of others’ feelings, social mores, or social problems",
-      "natural loner; neglects to include loved ones in decisions",
-      "transactional attitude; only values people for usefulness",
-      "doesn’t think twice about putting own needs first"
+      {en:"no awareness of others’ feelings, social mores, or social problems", vi:"ít ý thức cảm xúc người khác/chuẩn mực xã hội/vấn đề xã hội"},
+      {en:"natural loner; neglects to include loved ones in decisions", vi:"thiên về một mình; ít đưa người thân vào quyết định"},
+      {en:"transactional attitude; only values people for usefulness", vi:"thiên giao dịch; coi trọng người khác vì ‘hữu dụng’"},
+      {en:"doesn’t think twice about putting own needs first", vi:"ít lăn tăn khi ưu tiên nhu cầu bản thân trước"}
     ],
     prompts: [
-      "Do you feel best when everyone gets along, is treated fairly, and emotionally supports each other? Flip: are you brought down by harsh/unsupportive social environments?",
-      "Is it important to feel emotional connection—hoping important relationships involve care/acceptance and deepen over time?",
-      "Are you considerate and naturally mirror emotions to get on the same page—preferring diplomacy/compromise and judging disagreeable people as morally “off”?",
-      "When low, do you crave social connection/affirmation and feel guilt/shame asking for care—yet feel better after receiving it?",
-      "Do you often dislike people who seem selfish, aloof, ungrateful, harsh, condescending, dismissive?",
-      "Have you repeatedly been labeled (or feel sensitive to being labeled): meddlesome, attention-seeking, people-pleasing, inauthentic, “mindreading,” a pushover/doormat?"
+      {en:"Do you feel best when everyone gets along, is treated fairly, and emotionally supports each other? Flip: are you brought down by harsh/unsupportive social environments?",
+       vi:"Bạn thấy tốt nhất khi mọi người hòa hợp, được đối xử công bằng và hỗ trợ cảm xúc cho nhau không? Mặt ngược: môi trường xã hội khắc nghiệt/thiếu nâng đỡ có kéo bạn xuống không?"},
+      {en:"Is it important to feel emotional connection—hoping important relationships involve care/acceptance and deepen over time?",
+       vi:"Bạn có coi trọng kết nối cảm xúc—mong các mối quan hệ quan trọng có sự quan tâm/chấp nhận và sâu dần theo thời gian không?"},
+      {en:"Are you considerate and naturally mirror emotions to get on the same page—preferring diplomacy/compromise and judging disagreeable people as morally “off”?",
+       vi:"Bạn có tinh tế và hay ‘soi gương’ cảm xúc để cùng nhịp—thích ngoại giao/thỏa hiệp và có xu hướng đánh giá người quá đối đầu là ‘có vấn đề về mặt đạo đức’ không?"},
+      {en:"When low, do you crave social connection/affirmation and feel guilt/shame asking for care—yet feel better after receiving it?",
+       vi:"Khi xuống tinh thần, bạn có thèm kết nối/xác nhận từ người khác và thấy ngại khi xin sự quan tâm—nhưng lại thấy tốt hơn sau khi nhận được không?"},
+      {en:"Do you often dislike people who seem selfish, aloof, ungrateful, harsh, condescending, dismissive?",
+       vi:"Bạn có hay không thích người ích kỷ, xa cách, vô ơn, thô, kẻ cả, coi thường không?"},
+      {en:"Have you repeatedly been labeled (or feel sensitive to being labeled): meddlesome, attention-seeking, people-pleasing, inauthentic, “mindreading,” a pushover/doormat?",
+       vi:"Bạn có thường bị gắn nhãn (hoặc nhạy cảm khi bị nói): hay xen vào, thích được chú ý, làm vừa lòng người, không thật, ‘đọc ý người khác’, dễ bị bắt nạt/‘lót đường’ không?"}
     ]
   }
 };
@@ -693,8 +1183,11 @@ const TYPE_STACKS = {
 const POSITION_NAMES = ["Dominant","Auxiliary","Tertiary","Inferior"];
 const POSITION_WEIGHTS = [1.00, 0.85, 0.60, 0.40];
 
-const STATE_KEY = "mbti_notes_domaux_v1";
+const STATE_KEY = "mbti_notes_domaux_v2";
 
+/* ---------------------------
+   State
+--------------------------- */
 function defaultState(){
   const responses = {};
   for (const fnId of Object.keys(QUESTION_BANK)){
@@ -704,7 +1197,7 @@ function defaultState(){
     };
   }
   return {
-    version: 1,
+    version: 2,
     updatedAt: new Date().toISOString(),
     responses
   };
@@ -717,7 +1210,6 @@ function loadState(){
     const raw = localStorage.getItem(STATE_KEY);
     if (!raw) return defaultState();
     const parsed = JSON.parse(raw);
-    // very light migration safety
     if (!parsed.responses) return defaultState();
     return parsed;
   }catch(e){
@@ -739,14 +1231,21 @@ function toast(msg){
 
 function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
+function tObj(x){
+  if (x == null) return "";
+  if (typeof x === "string") return x;
+  return x[lang] ?? x.en ?? "";
+}
+
+/* ---------------------------
+   Scoring
+--------------------------- */
 function calcFunction(fnId){
   const fn = QUESTION_BANK[fnId];
   const r = state.responses[fnId];
 
-  // Positive prompts
   let pos = 0;
   const posMax = fn.prompts.length * 4;
-
   let exampleGood = 0;
 
   for (let i=0;i<fn.prompts.length;i++){
@@ -760,13 +1259,11 @@ function calcFunction(fnId){
     const stressW = stress ? 0.70 : 1.00;
 
     pos += freq * recW * stressW;
-
     if (example.length >= 40) exampleGood++;
   }
 
   const posNorm = (posMax > 0) ? (pos / posMax) : 0;
 
-  // Negative “NOT dominant” anti-signs
   let neg = 0;
   const negMax = fn.notDominant.length * 4;
   for (let i=0;i<fn.notDominant.length;i++){
@@ -775,12 +1272,9 @@ function calcFunction(fnId){
   }
   const negNorm = (negMax > 0) ? (neg / negMax) : 0;
 
-  // Completeness multiplier (examples)
   const completeness = fn.prompts.length ? (exampleGood / fn.prompts.length) : 0;
   const completenessMult = 0.80 + 0.20 * clamp(completeness, 0, 1);
 
-  // Final score in [0,100]
-  // Subtract anti-signs moderately: if neg is high, it strongly reduces “dominant” likelihood.
   let score01 = posNorm - 0.65 * negNorm;
   score01 = clamp(score01, 0, 1) * completenessMult;
 
@@ -805,8 +1299,7 @@ function calcTypeScores(fnScores){
   const raw = {};
   for (const t of types){
     const stack = TYPE_STACKS[t];
-    let sum = 0;
-    let wSum = 0;
+    let sum = 0, wSum = 0;
     for (let i=0;i<stack.length;i++){
       const fn = stack[i];
       const w = POSITION_WEIGHTS[i];
@@ -818,7 +1311,7 @@ function calcTypeScores(fnScores){
   return raw;
 }
 
-function softmax(scoreMap, temperature=8){
+function softmax(scoreMap, temperature=7.5){
   const entries = Object.entries(scoreMap);
   const max = Math.max(...entries.map(e=>e[1]));
   const exps = entries.map(([k,v]) => [k, Math.exp((v-max)/temperature)]);
@@ -830,6 +1323,9 @@ function softmax(scoreMap, temperature=8){
   return probs;
 }
 
+/* ---------------------------
+   DOM helpers
+--------------------------- */
 function el(tag, attrs={}, children=[]){
   const node = document.createElement(tag);
   for (const [k,v] of Object.entries(attrs)){
@@ -845,10 +1341,9 @@ function el(tag, attrs={}, children=[]){
   return node;
 }
 
-function ratingLabel(n){
-  return ["Never","Rarely","Sometimes","Often","Almost always"][Number(n)||0];
-}
-
+/* ---------------------------
+   Render: Questionnaire
+--------------------------- */
 function renderFunctions(){
   const container = document.getElementById("functionsContainer");
   container.innerHTML = "";
@@ -861,31 +1356,28 @@ function renderFunctions(){
     const summary = el("summary", {}, [
       el("div", {class:"fnTitle"}, [
         el("span", {class:"badge"}, [fnId]),
-        el("span", {}, [fn.title]),
-        el("span", {class:"badge j"}, [fn.kind])
+        el("span", {}, [tObj(fn.title)]),
+        el("span", {class:"badge j"}, [tObj(fn.kind)])
       ]),
-      el("span", {class:"badge neg"}, ["Open / Close"])
+      el("span", {class:"badge neg"}, [tr("open_close")])
     ]);
-
     det.appendChild(summary);
 
     const sec = el("div", {class:"section"}, []);
-    sec.appendChild(el("p", {class:"small muted"}, [
-      "Step 1: rate anti-signs (“NOT dominant”). Step 2: answer prompts with recurring examples."
-    ]));
+    sec.appendChild(el("p", {class:"small muted"}, [tr("step12")]));
 
     // Anti-signs
     sec.appendChild(el("div", {class:"q"}, [
-      el("h3", {}, ["Anti-signs (“NOT dominant”) — rate how often this describes you"]),
-      el("p", {class:"small muted"}, ["These subtract from “dominant-likelihood” for this function."])
+      el("h3", {}, [tr("anti_title")]),
+      el("p", {class:"small muted"}, [tr("anti_sub")])
     ]));
 
-    fn.notDominant.forEach((text, i) => {
+    fn.notDominant.forEach((textObj, i) => {
       const r = resp.anti[i] || {freq:0};
       const wrap = el("div", {class:"q"}, [
-        el("h3", {}, [text]),
+        el("h3", {}, [tObj(textObj)]),
         el("div", {class:"row"}, [
-          el("label", {}, ["Frequency:"]),
+          el("label", {}, [tr("frequency")]),
           el("input", {
             type:"range", min:"0", max:"4", step:"1",
             value: String(r.freq ?? 0),
@@ -904,18 +1396,16 @@ function renderFunctions(){
 
     // Prompts
     sec.appendChild(el("div", {class:"q"}, [
-      el("h3", {}, ["Prompts — rate + recurrence + example"]),
-      el("p", {class:"small muted"}, [
-        "Recurrence matters. Mark “one-off” if it’s not a stable pattern. Check “stress/grip” if it mainly happens under stress."
-      ])
+      el("h3", {}, [tr("prompts_title")]),
+      el("p", {class:"small muted"}, [tr("prompts_sub")])
     ]));
 
-    fn.prompts.forEach((qText, i) => {
+    fn.prompts.forEach((qObj, i) => {
       const r = resp.prompts[i] || {freq:0, rec:"repeated", stress:false, example:""};
       const qBox = el("div", {class:"q"}, [
-        el("h3", {}, [qText]),
+        el("h3", {}, [tObj(qObj)]),
         el("div", {class:"row"}, [
-          el("label", {}, ["Frequency:"]),
+          el("label", {}, [tr("frequency")]),
           el("input", {
             type:"range", min:"0", max:"4", step:"1",
             value: String(r.freq ?? 0),
@@ -927,12 +1417,13 @@ function renderFunctions(){
             }
           }),
           el("span", {id:`posLbl_${fnId}_${i}`, class:"pill"}, [ratingLabel(r.freq ?? 0)]),
-          el("label", {style:"margin-left:8px"}, ["Recurrence:"]),
+
+          el("label", {style:"margin-left:8px"}, [tr("recurrence")]),
           (function(){
             const sel = el("select", {}, [
-              el("option", {value:"oneoff"}, ["one-off / rare"]),
-              el("option", {value:"repeated"}, ["repeated pattern"]),
-              el("option", {value:"lifelong"}, ["lifelong / very stable"])
+              el("option", {value:"oneoff"}, [tr("oneoff")]),
+              el("option", {value:"repeated"}, [tr("repeated")]),
+              el("option", {value:"lifelong"}, [tr("lifelong")])
             ]);
             sel.value = r.rec || "repeated";
             sel.addEventListener("change", (e)=>{
@@ -942,6 +1433,7 @@ function renderFunctions(){
             });
             return sel;
           })(),
+
           el("label", {style:"margin-left:8px"}, [
             (function(){
               const cb = el("input", {type:"checkbox"});
@@ -953,11 +1445,11 @@ function renderFunctions(){
               });
               return cb;
             })(),
-            " Mostly under stress/grip"
+            " " + tr("stress")
           ])
         ]),
         el("textarea", {
-          placeholder: "Write 2–3 real situations over time. What happened? What did you notice? What did you do? WHY did you do it?",
+          placeholder: tr("example_placeholder"),
           oninput: (e)=>{
             r.example = e.target.value;
             resp.prompts[i] = r;
@@ -973,6 +1465,9 @@ function renderFunctions(){
   }
 }
 
+/* ---------------------------
+   Render: Results
+--------------------------- */
 function renderResults(){
   const fnScores = calcAllFunctions();
   const fnEntries = Object.entries(fnScores)
@@ -985,12 +1480,10 @@ function renderResults(){
   const topFns = fnEntries.slice(0,4).map(x=>`${x.id} (${x.score})`).join(" • ");
   fnRank.appendChild(el("div", {class:"note"}, [
     el("div", {class:"inline"}, [
-      el("span", {class:"badge"}, ["Top functions:"]),
+      el("span", {class:"badge"}, [tr("results_top_functions")]),
       el("span", {class:"mono"}, [topFns || "—"])
     ]),
-    el("p", {style:"margin:8px 0 0 0"}, [
-      "These are evidence scores from your ratings + recurrence + stress flags + anti-signs."
-    ])
+    el("p", {style:"margin:8px 0 0 0"}, [tr("results_fn_note")])
   ]));
 
   // Function table
@@ -999,22 +1492,22 @@ function renderResults(){
   const t = el("table", {}, [
     el("thead", {}, [
       el("tr", {}, [
-        el("th", {}, ["Function"]),
-        el("th", {}, ["Evidence"]),
-        el("th", {}, ["Bar"]),
-        el("th", {}, ["Notes"])
+        el("th", {}, [tr("tbl_function")]),
+        el("th", {}, [tr("tbl_evidence")]),
+        el("th", {}, [tr("tbl_bar")]),
+        el("th", {}, [tr("tbl_notes")])
       ])
     ]),
     el("tbody", {}, fnEntries.map(row=>{
       const bar = el("div", {class:"bar"}, [el("div", {style:`width:${row.score}%`}, [])]);
-      const notes = `examples ok: ${Math.round(row.completeness*100)}% • anti-signs: ${Math.round(row.negNorm*100)}%`;
+      const notes = `${tr("notes_examples_ok")}: ${Math.round(row.completeness*100)}% • ${tr("notes_antisigns")}: ${Math.round(row.negNorm*100)}%`;
       return el("tr", {}, [
         el("td", {}, [
           el("div", {class:"inline"}, [
             el("span", {class:"badge"}, [row.id]),
-            el("span", {}, [QUESTION_BANK[row.id].title])
+            el("span", {}, [tObj(QUESTION_BANK[row.id].title)])
           ]),
-          el("div", {class:"small muted"}, [QUESTION_BANK[row.id].kind])
+          el("div", {class:"small muted"}, [tObj(QUESTION_BANK[row.id].kind)])
         ]),
         el("td", {class:"right mono"}, [String(row.score)]),
         el("td", {}, [bar]),
@@ -1040,12 +1533,10 @@ function renderResults(){
 
   typeRank.appendChild(el("div", {class:"note"}, [
     el("div", {class:"inline"}, [
-      el("span", {class:"badge"}, ["Top stack:"]),
+      el("span", {class:"badge"}, [tr("results_top_stack")]),
       el("span", {class:"mono"}, [bestLine])
     ]),
-    el("p", {style:"margin:8px 0 0 0"}, [
-      "Click a candidate below to see how your Dom/Aux/Tert/Inf scores line up."
-    ])
+    el("p", {style:"margin:8px 0 0 0"}, [tr("results_click")])
   ]));
 
   const topList = typeEntries.slice(0,5);
@@ -1062,7 +1553,7 @@ function renderResults(){
           stack.map((fn,i)=>`${POSITION_NAMES[i]}:${fn}`).join("  |  ")
         ])
       ]),
-      el("button", {class:"btn", onclick: ()=>toggleTypeDetails(entry.type)}, ["Details"])
+      el("button", {class:"btn", onclick: ()=>toggleTypeDetails(entry.type)}, [tr("results_details")])
     ]);
     tc.appendChild(head);
 
@@ -1083,15 +1574,14 @@ function renderResults(){
     if (gap < 3.0){
       const diffFns = symmetricDiff(TYPE_STACKS[best.type], TYPE_STACKS[second.type]);
       tieBreak.appendChild(el("div", {class:"note warn"}, [
-        el("b", {}, ["Close call."]),
-        " Your top 2 stacks are very close. Re-check these differentiator functions: ",
-        el("span", {class:"mono"}, [diffFns.join(", ") || "—"]),
-        ". They’re usually what decides Dom/Aux and confirms Tert/Inf."
+        el("b", {}, [tr("results_close_call")]),
+        " " + tr("results_recheck") + " ",
+        el("span", {class:"mono"}, [diffFns.join(", ") || "—"])
       ]));
     }else{
       tieBreak.appendChild(el("div", {class:"note"}, [
-        el("b", {}, ["Not close."]),
-        ` Your top stack is ahead by ${gap.toFixed(1)} points over #2. Still, confirm Tert/Inf by checking whether they feel less stable or more stress-activated.`
+        el("b", {}, [tr("results_not_close")]),
+        ` ${tr("results_ahead")} ${gap.toFixed(1)} ${tr("results_points")}`
       ]));
     }
   }
@@ -1100,15 +1590,10 @@ function renderResults(){
 function renderTypeDetails(type, fnScores){
   const stack = TYPE_STACKS[type];
 
-  const box = el("div", {class:"split"}, []);
-
-  // Left: stack alignment
   const left = el("div", {}, []);
-    left.appendChild(el("div", {class:"q"}, [
-    el("h3", {}, ["Stack alignment"]),
-    el("p", {class:"small muted"}, [
-      "If your Inferior has high score and feels lifelong (not stress), your stack guess may be off."
-    ])
+  left.appendChild(el("div", {class:"q"}, [
+    el("h3", {}, [tr("stack_alignment")]),
+    el("p", {class:"small muted"}, [tr("stack_alignment_note")])
   ]));
 
   const rows = stack.map((fn,i)=>{
@@ -1118,34 +1603,28 @@ function renderTypeDetails(type, fnScores){
       el("div", {class:"inline"}, [
         el("span", {class:"badge"}, [POSITION_NAMES[i]]),
         el("span", {class:"badge"}, [fn]),
-        el("span", {}, [QUESTION_BANK[fn].title]),
+        el("span", {}, [tObj(QUESTION_BANK[fn].title)]),
         el("span", {class:"pill mono"}, [String(s)])
       ]),
       el("div", {style:"margin-top:8px"}, [bar]),
-      el("p", {class:"small muted"}, [
-        "Quick verify: does this position match your lived experience (automatic for Dom, supportive for Aux, inconsistent for Tert, stressy/awkward for Inf)?"
-      ])
+      el("p", {class:"small muted"}, [tr("quick_verify")])
     ]);
   });
-
   rows.forEach(r=>left.appendChild(r));
 
-  // Right: confirmation prompts (for Tert/Inf)
   const right = el("div", {}, []);
   const tert = stack[2];
   const inf = stack[3];
 
   right.appendChild(el("div", {class:"q"}, [
-    el("h3", {}, ["Confirm Tert/Inf with targeted prompts"]),
-    el("p", {class:"small muted"}, [
-      "These are the most useful confirmation points—people often mistype because they only look at Dom/Aux."
-    ])
+    el("h3", {}, [tr("confirm_targeted")]),
+    el("p", {class:"small muted"}, [tr("confirm_targeted_note")])
   ]));
 
   right.appendChild(renderConfirmBlock("Tertiary", tert));
   right.appendChild(renderConfirmBlock("Inferior", inf));
 
-  return el("div", {}, [left, right]);
+  return el("div", {class:"split"}, [left, right]);
 }
 
 function renderConfirmBlock(posName, fnId){
@@ -1154,19 +1633,15 @@ function renderConfirmBlock(posName, fnId){
     el("div", {class:"inline"}, [
       el("span", {class:"badge"}, [posName]),
       el("span", {class:"badge"}, [fnId]),
-      el("span", {}, [fn.title])
+      el("span", {}, [tObj(fn.title)])
     ]),
-    el("p", {class:"small muted"}, [
-      "Pick 1–2 prompts below and check if your examples feel consistent and easy to sustain (higher) vs sporadic/stressy (lower)."
-    ])
+    el("p", {class:"small muted"}, [tr("pick_1_2")])
   ]);
 
-  // show first 3 prompts + 1 anti-sign to keep it short
   fn.prompts.slice(0,3).forEach(p=>{
-    block.appendChild(el("p", {class:"small"}, ["• " + p]));
+    block.appendChild(el("p", {class:"small"}, ["• " + tObj(p)]));
   });
-  block.appendChild(el("p", {class:"small muted"}, ["Anti-sign example: " + fn.notDominant[0]]));
-
+  block.appendChild(el("p", {class:"small muted"}, [tr("anti_example") + " " + tObj(fn.notDominant[0])]));
   return block;
 }
 
@@ -1185,12 +1660,17 @@ function toggleTypeDetails(type){
   elx.style.display = (elx.style.display === "none") ? "block" : "none";
 }
 
+/* ---------------------------
+   Navigation
+--------------------------- */
 function goto(step){
   document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
-  document.getElementById(`step-${step}`).classList.add("active");
+  const target = document.getElementById(`step-${step}`);
+  if (target) target.classList.add("active");
+
   if (step === "questions") renderFunctions();
   if (step === "results") renderResults();
-  if (step === "export") { /* nothing heavy */ }
+
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
@@ -1198,13 +1678,23 @@ function wireNav(){
   document.querySelectorAll("[data-nav]").forEach(btn=>{
     btn.addEventListener("click", ()=>goto(btn.getAttribute("data-nav")));
   });
+
+  // Fallback (in case some elements are dynamically added later)
+  document.addEventListener("click", (e)=>{
+    const b = e.target.closest("[data-nav]");
+    if (!b) return;
+    goto(b.getAttribute("data-nav"));
+  });
 }
 
+/* ---------------------------
+   Export / Import / LLM
+--------------------------- */
 function resetAll(){
-  if (!confirm("Reset all ratings and examples? This clears local data.")) return;
+  if (!confirm(tr("reset_confirm"))) return;
   localStorage.removeItem(STATE_KEY);
   state = defaultState();
-  toast("Reset complete.");
+  toast(tr("reset_done"));
   goto("instructions");
 }
 
@@ -1221,7 +1711,9 @@ function download(filename, text){
 }
 
 function copyToClipboard(text){
-  navigator.clipboard.writeText(text).then(()=>toast("Copied."), ()=>toast("Copy failed."));
+  navigator.clipboard.writeText(text)
+    .then(()=>toast(tr("copied")))
+    .catch(()=>toast(tr("copy_failed")));
 }
 
 function buildLlmPrompt(){
@@ -1232,36 +1724,37 @@ function buildLlmPrompt(){
     .sort((a,b)=>b.s-a.s).slice(0,3);
 
   let out = "";
-  out += "You are helping me interpret my MBTI cognitive function self-reflection answers.\n";
-  out += "Please:\n";
-  out += "1) Summarize recurring patterns per function (Si/Ni/Se/Ne/Ti/Fi/Te/Fe) from my examples.\n";
-  out += "2) Identify contradictions (e.g., high score but examples are one-off or only under stress).\n";
-  out += "3) Propose my most likely Dom/Aux and confirm with plausible Tert/Inf.\n";
-  out += "4) If multiple stacks are close, tell me which differentiator questions to revisit.\n\n";
-  out += "Top candidate stacks from the tool (for context only):\n";
+  out += (lang === "vi")
+    ? "Bạn đang giúp tôi diễn giải câu trả lời tự phản tư về MBTI cognitive functions.\n"
+    : "You are helping me interpret my MBTI cognitive function self-reflection answers.\n";
+
+  out += (lang === "vi")
+    ? "Hãy:\n1) Tóm tắt mẫu hành vi lặp lại theo từng chức năng (Si/Ni/Se/Ne/Ti/Fi/Te/Fe).\n2) Chỉ ra mâu thuẫn.\n3) Đề xuất Dom/Aux và xác nhận Tert/Inf.\n4) Nếu nhiều stack sát nhau, nói tôi cần xem lại câu hỏi phân biệt nào.\n\n"
+    : "Please:\n1) Summarize recurring patterns per function (Si/Ni/Se/Ne/Ti/Fi/Te/Fe) from my examples.\n2) Identify contradictions.\n3) Propose my most likely Dom/Aux and confirm with plausible Tert/Inf.\n4) If multiple stacks are close, tell me which differentiator questions to revisit.\n\n";
+
+  out += (lang === "vi") ? "Top stack (chỉ để tham khảo):\n" : "Top candidate stacks (for context only):\n";
   topTypes.forEach(x=>{
     out += `- ${x.t}: ${TYPE_STACKS[x.t].join("-")} (match ${x.s.toFixed(1)}, ~${Math.round(x.p*100)}%)\n`;
   });
-  out += "\nMy raw answers follow.\n";
-  out += "Important: prioritize enduring patterns and the WHY behind behavior.\n\n";
+  out += "\n";
 
   for (const fnId of Object.keys(QUESTION_BANK)){
     const fn = QUESTION_BANK[fnId];
     const r = state.responses[fnId];
-    out += `=== ${fnId} — ${fn.title} ===\n`;
-    out += `Anti-signs (NOT dominant) ratings (0-4):\n`;
+    out += `=== ${fnId} — ${tObj(fn.title)} ===\n`;
+    out += (lang === "vi") ? "Anti-signs (0-4):\n" : "Anti-signs (0-4):\n";
     fn.notDominant.forEach((t,i)=>{
       const v = r.anti[i]?.freq ?? 0;
-      out += `- ${v}: ${t}\n`;
+      out += `- ${v}: ${tObj(t)}\n`;
     });
-    out += `Prompts:\n`;
+    out += (lang === "vi") ? "Câu hỏi:\n" : "Prompts:\n";
     fn.prompts.forEach((p,i)=>{
       const item = r.prompts[i] || {};
       const freq = item.freq ?? 0;
       const rec = item.rec ?? "repeated";
       const stress = item.stress ? "YES" : "no";
       const ex = (item.example || "").trim() || "(no example)";
-      out += `- Q: ${p}\n`;
+      out += `- Q: ${tObj(p)}\n`;
       out += `  Rating: ${freq}/4 | Recurrence: ${rec} | Stress/grip: ${stress}\n`;
       out += `  Example: ${ex}\n`;
     });
