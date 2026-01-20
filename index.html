@@ -53,7 +53,7 @@
           method: 'POST',
           headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: 'llama3-8b-8192',
+            model: 'llama-3.1-8b-instant',
             messages: [{ role: 'user', content: `Analyze MBTI cognitive functions from: "${input}". Identify likely stack and explain strengths/weaknesses in 4-6 sentences. Be precise and insightful.` }],
             max_tokens: 400,
             temperature: 0.7
