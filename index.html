@@ -3,76 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MBTI Cognitive Functions AI Analyzer - dekisugi123.github.io</title>
+  <title>MBTI Spotting Analyzer</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #333; }
-    h1 { color: #24292f; border-bottom: 1px solid #d0d7de; padding-bottom: 10px; }
-    textarea { width: 100%; height: 160px; padding: 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; box-sizing: border-box; margin: 15px 0; }
-    button { background: #2ea44f; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; }
-    button:hover { background: #2c974b; }
-    button:disabled { background: #6a737d; cursor: not-allowed; }
-    #result { margin-top: 20px; padding: 20px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; white-space: pre-wrap; min-height: 100px; font-size: 15px; }
-    .loading { color: #586069; }
-    .error { color: #d73a49; background: #ffeef0; border-color: #d73a49; }
-    footer { margin-top: 40px; text-align: center; font-size: 12px; color: #6a737d; }
+    body { font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    h1, h3 { color: #1f2937; }
+    #starters { background: #f3f4f6; padding: 20px; border-radius: 12px; }
+    ol { padding-left: 25px; }
+    #chat { height: 450px; overflow-y: scroll; border: 1px solid #d1d5db; padding: 20px; background: white; border-radius: 12px; margin: 20px 0; }
+    .msg { margin: 15px 0; padding: 12px; border-left: 4px solid #3b82f6; background: #f8fafc; }
+    .user-msg { border-left-color: #10b981; }
+    .ai-msg { border-left-color: #8b5cf6; }
+    input { width: 55%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; }
+    button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 0 5px; }
+    .analyze { background: #ef4444; color: white; }
+    .analyze:hover { background: #dc2626; }
+    .send { background: #3b82f6; color: white; }
+    .send:hover { background: #2563eb; }
   </style>
 </head>
 <body>
-  <h1>🧠 MBTI Cognitive Functions AI Analyzer</h1>
-  <p>Powered by free <a href="https://groq.com" target="_blank">Groq AI</a>. Enter thoughts/preferences/quiz answers for instant stack analysis (e.g., Ti-Ne-Si-Fe).</p>
-  <textarea id="answers" placeholder="Example: I love deep analysis but hate small talk. I plan long-term but overlook details sometimes..."></textarea>
-  <br>
-  <button id="analyzeBtn" onclick="analyze()">🔍 Analyze Functions</button>
-  <div id="result">Enter text above and click Analyze for AI results!</div>
-  
-  <footer>Built with GitHub Pages | <a href="https://console.groq.com/keys" target="_blank">Get Free Groq Key</a></footer>
+  <h1>MBTI Spotting Analyzer (mbti-notes Exact)</h1>
+  <p>Answer starters w/ life examples. AI spots leads → Rechecks full signs/NOT for suspects → Final type.</p>
+
+  <div id="starters">
+    <h3>Open-Ended Starters (Ex from life required):</h3>
+    <ol>
+      <li>Describe a decision where values/morals clashed w/ others. Ex?</li>
+      <li>How do you handle new/unfamiliar situations? Ex of comfort/discomfort?</li>
+      <li>Ex of analyzing problems: Precision or efficiency focus?</li>
+      <li>Planning: Patterns/foresight or details/routines? Ex?</li>
+      <li>Social: Read harmony or authentic self? Ex clash?</li>
+    </ol>
+  </div>
+
+  <div id="chat"></div>
+  <input id="input" placeholder="Answer starter or respond to probe...">
+  <button class="send" onclick="sendMessage()">Send</button>
+  <button class="analyze" onclick="finalizeType()">Finalize Type</button>
 
   <script>
-    async function analyze() {
-      const input = document.getElementById('answers').value.trim();
-      if (!input) return alert('Please describe your thoughts first!');
-      
-      const resultDiv = document.getElementById('result');
-      const btn = document.getElementById('analyzeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Analyzing...';
-      resultDiv.textContent = 'Contacting Groq AI...';
-      resultDiv.className = 'loading';
-      
-      const API_KEY = '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';  // ← Replace with your key!
-      
-      if (API_KEY === 'YOUR_FREE_GROQ_KEY_HERE') {
-        resultDiv.innerHTML = '🚀 <strong>First:</strong> Sign up free at <a href="https://console.groq.com" target="_blank">console.groq.com</a> > API Keys > Create API Key.<br>Then edit this file, replace the key, commit/push. Test locally by opening HTML.';
-        btn.disabled = false;
-        btn.textContent = '🔍 Analyze Functions';
-        return;
+    // Full mbti-notes Spotting Data Embedded
+    const spottingData = {
+      "Si": {
+        domSigns: ["Feel at ease when sensory details match expectations", "Easily thrown by physical discomfort/new env", "Value past learning/experience", "Prefer procedures/proper conduct"],
+        notDomSigns: ["Careless with details", "Dislikes procedure", "Averse to authority", "Embraces novelty/risk/big ideas/sudden change", "Dismisses past exp", "Impractical/unrealistic/speculative"],
+        qs: ["Sensory details to liking/expectations? Ex of discomfort in unfamiliar w/ no prior knowledge?"]
+      },
+      "Se": {
+        domSigns: ["Engage physical world directly", "Adapt to immediate opportunities", "Seek sensory stimulation/novelty"],
+        notDomSigns: ["Avoid sensory overload", "Prefer abstract over concrete", "Detached from present"],
+        qs: ["Seize present action? Ex adapting chaos?"]
+      },
+      "Ni": {
+        domSigns: ["Converge on foresight/patterns", "Strategic long-term vision", "Insightful predictions"],
+        notDomSigns: ["Scattered/divergent ideas", "No big picture", "Short-term reactive"],
+        qs: ["Predict trends/insights? Ex vision guiding?"]
+      },
+      "Ne": {
+        domSigns: ["Diverge possibilities/brainstorm", "Novelty/connections", "Flexible ideas"],
+        notDomSigns: ["Rigid routines", "Fear change", "Narrow focus"],
+        qs: ["Explore 'what if'? Ex novelty embrace?"]
+      },
+      "Ti": {
+        domSigns: ["Precise inner logic/dissection", "Consistency/accuracy", "Question assumptions"],
+        notDomSigns: ["Accept authority w/o critique", "Efficiency over truth"],
+        qs: ["Dissect arguments for flaws? Ex precision?"]
+      },
+      "Te": {
+        domSigns: ["Efficient systems/objective goals", "Organize for results", "Standards/measurables"],
+        notDomSigns: ["Subjective theories", "Ignore practicality"],
+        qs: ["Structure for efficiency? Ex plans/results?"]
+      },
+      "Fi": {
+        domSigns: ["Inner morals/authenticity", "Personal values guide", "Empathize deeply self"],
+        notDomSigns: ["Mirror group feelings", "Compromise core self"],
+        qs: ["'Right for me' vs group? Ex value clash?"]
+      },
+      "Fe": {
+        domSigns: ["Group harmony/read social cues", "Adapt for others", "Emotional connection"],
+        notDomSigns: ["Detached/blunt", "Ignore feelings"],
+        qs: ["Harmony priority? Ex read room?"]
       }
+    };
 
+    let messages = [{
+      role: 'system',
+      content: `MBTI spotter using ONLY spottingData JSON. Flow: 1. Starter answers → Spot leads (e.g., 'detail ex → Si'). 2. For EACH suspect dom: List ALL domSigns + qs w/ "life ex?". Probe ALL notDomSigns: "Match any? Ex → Exclude if yes". Score: "Dom: 4/4 signs yes, 0 notDom → Strong dom". Repeat for stack till confident. Finalize: Stack, evidence, dev. Concrete ex EVERY time. No vague.`
+    }];
+
+    async function sendMessage() {
+      const input = document.getElementById('input').value.trim();
+      if (!input) return;
+      messages.push({role: 'user', content: input});
+      addMessage('You', input);
+      document.getElementById('input').value = '';
+      await getAIResponse();
+    }
+
+    async function getAIResponse() {
+      const chat = document.getElementById('chat');
+      chat.innerHTML += '<div class="msg ai-msg"><strong>AI:</strong> Thinking...</div>';
       try {
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
-          headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
+          headers: {'Authorization': `Bearer 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`, 'Content-Type': 'application/json'},
           body: JSON.stringify({
             model: 'llama-3.1-8b-instant',
-            messages: [{ role: 'user', content: `Analyze MBTI cognitive functions from: "${input}". Identify likely stack and explain strengths/weaknesses in 4-6 sentences. Be precise and insightful.` }],
-            max_tokens: 400,
-            temperature: 0.7
+            messages: messages,
+            max_tokens: 800,
+            temperature: 0.2  // Low for precision
           })
         });
         const data = await response.json();
-        if (data.choices?.[0]?.message?.content) {
-          resultDiv.textContent = data.choices[0].message.content;
-          resultDiv.className = '';
-        } else {
-          throw new Error(data.error?.message || 'Invalid response');
-        }
-      } catch (error) {
-        resultDiv.textContent = `❌ Error: ${error.message}\n\nTips: Check key validity, rate limits (30/min free), or internet. View console (F12) for details.`;
-        resultDiv.className = 'error';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '🔍 Analyze Functions';
+        const reply = data.choices[0].message.content;
+        messages.push({role: 'assistant', content: reply});
+        document.querySelector('.ai-msg:last-child').innerHTML = `<strong>AI:</strong> ${reply.replace(/\n/g, '<br>')}`;
+      } catch (e) {
+        addMessage('Error', e.message);
       }
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function addMessage(sender, text) {
+      const chat = document.getElementById('chat');
+      const div = document.createElement('div');
+      div.className = `msg ${sender === 'You' ? 'user-msg' : 'ai-msg'}`;
+      div.innerHTML = `<strong>${sender}:</strong> ${text.replace(/\n/g, '<br>')}`;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function finalizeType() {
+      messages.push({role: 'user', content: 'Finalize type: Stack from all signs/ex, evidence, rule-outs, development.'});
+      addMessage('You', 'Finalize Type');
+      await getAIResponse();
     }
   </script>
 </body>
