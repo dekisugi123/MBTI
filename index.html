@@ -1,142 +1,765 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MBTI Spotting Analyzer</title>
   <style>
-    body { font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
-    h1, h3 { color: #1f2937; }
-    #starters { background: #f3f4f6; padding: 20px; border-radius: 12px; }
-    ol { padding-left: 25px; }
-    #chat { height: 450px; overflow-y: scroll; border: 1px solid #d1d5db; padding: 20px; background: white; border-radius: 12px; margin: 20px 0; }
-    .msg { margin: 15px 0; padding: 12px; border-left: 4px solid #3b82f6; background: #f8fafc; }
-    .user-msg { border-left-color: #10b981; }
-    .ai-msg { border-left-color: #8b5cf6; }
-    input { width: 55%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; }
-    button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 0 5px; }
-    .analyze { background: #ef4444; color: white; }
-    .analyze:hover { background: #dc2626; }
-    .send { background: #3b82f6; color: white; }
-    .send:hover { background: #2563eb; }
+    :root {
+      --bg: #ffffff;
+      --panel: #f3f4f6;
+      --border: #d1d5db;
+      --text: #111827;
+      --muted: #6b7280;
+      --blue: #3b82f6;
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --red: #ef4444;
+      --amber: #f59e0b;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 18px;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    h1 { margin: 0 0 6px; }
+    p { margin: 6px 0 14px; color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    #starters ol { padding-left: 22px; margin: 10px 0 0; }
+    #starters li { margin: 6px 0; }
+
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .row > * { flex: 0 0 auto; }
+
+    label { font-size: 13px; color: var(--muted); }
+    input[type="text"], input[type="password"], select, input[type="number"] {
+      padding: 10px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+      min-width: 180px;
+    }
+    input[type="number"] { width: 110px; }
+
+    textarea {
+      width: 100%;
+      min-height: 96px;
+      resize: vertical;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+      outline: none;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #fff;
+      user-select: none;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-send { background: var(--blue); }
+    .btn-send:hover { background: #2563eb; }
+    .btn-analyze { background: var(--red); }
+    .btn-analyze:hover { background: #dc2626; }
+    .btn-ghost { background: #111827; }
+    .btn-ghost:hover { background: #0b1220; }
+    .btn-amber { background: var(--amber); }
+    .btn-amber:hover { background: #d97706; }
+
+    #chat {
+      height: 520px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      padding: 14px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .msg {
+      margin: 12px 0;
+      padding: 12px;
+      border-left: 4px solid var(--blue);
+      background: #f8fafc;
+      border-radius: 10px;
+      position: relative;
+      word-break: break-word;
+    }
+    .user-msg { border-left-color: var(--green); background: #f0fdf4; }
+    .ai-msg { border-left-color: var(--purple); background: #f5f3ff; }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .meta strong { font-size: 13px; }
+    .meta small { color: var(--muted); font-size: 12px; }
+
+    .msg-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .chip {
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: #111827;
+    }
+    .chip:hover { background: #f9fafb; }
+
+    /* Verdict panel */
+    .verdict {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .verdict h3 { margin: 0 0 6px; font-size: 14px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-right: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .b-confirm { border-color: #16a34a; color: #166534; }
+    .b-exclude  { border-color: #dc2626; color: #7f1d1d; }
+    .b-poss     { border-color: #f59e0b; color: #92400e; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(980px, 100%);
+      max-height: 86vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .modal-head strong { font-size: 14px; }
+    .modal pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0;
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .footer { margin-top: 10px; font-size: 12px; color: var(--muted); }
   </style>
 </head>
 <body>
-  <h1>MBTI Spotting Analyzer (mbti-notes Exact)</h1>
-  <p>Answer starters w/ life examples. AI spots leads → Rechecks full signs/NOT for suspects → Final type.</p>
+  <h1>MBTI Spotting Analyzer (mbti-notes style)</h1>
+  <p>
+    Starter answers → AI spots evidence → conservative rule engine:
+    <b>Confirm dom only if ALL domSigns are satisfied</b>;
+    <b>Exclude dom only if ALL notDomSigns are satisfied</b>.
+  </p>
 
-  <div id="starters">
-    <h3>Open-Ended Starters (Ex from life required):</h3>
-    <ol>
-      <li>Describe a decision where values/morals clashed w/ others. Ex?</li>
-      <li>How do you handle new/unfamiliar situations? Ex of comfort/discomfort?</li>
-      <li>Ex of analyzing problems: Precision or efficiency focus?</li>
-      <li>Planning: Patterns/foresight or details/routines? Ex?</li>
-      <li>Social: Read harmony or authentic self? Ex clash?</li>
-    </ol>
+  <div class="grid">
+    <div class="card" id="starters">
+      <h3 style="margin:0 0 10px;">Open-Ended Starters (life examples required)</h3>
+      <ol>
+        <li>Decision where values/morals clashed w/ others (real example)</li>
+        <li>New/unfamiliar situations: comfort vs discomfort (example)</li>
+        <li>Analyzing problems: precision vs efficiency (example)</li>
+        <li>Planning: patterns/foresight vs details/routines (example)</li>
+        <li>Social: harmony vs authentic self (example of clash)</li>
+      </ol>
+
+      <div class="verdict" id="verdict">
+        <h3>Function Dominance Verdict (conservative)</h3>
+        <div id="verdictBody" class="footer">Run “Finalize Type” to populate verdicts.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 10px;">Settings (GitHub Pages safe)</h3>
+      <div class="row" style="margin-bottom:10px;">
+        <div>
+          <label>Groq API Key (stored locally)</label><br/>
+          <input id="apiKey" type="password" placeholder="gsk_..." autocomplete="off" />
+        </div>
+        <div>
+          <label>Model</label><br/>
+          <select id="model">
+            <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile (more accurate)</option>
+            <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (fast)</option>
+          </select>
+        </div>
+        <div>
+          <label>Max tokens</label><br/>
+          <input id="maxTokens" type="number" value="1800" min="256" max="4096" />
+        </div>
+        <div>
+          <label>Temp</label><br/>
+          <input id="temp" type="number" value="0.2" min="0" max="2" step="0.1" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Split mode (input → messages)</label><br/>
+          <select id="splitMode">
+            <option value="single">Single message</option>
+            <option value="semicolon">Split on semicolons ;</option>
+            <option value="blankline">Split on blank lines</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost" id="btnExport">Export</button>
+        <button class="btn btn-ghost" id="btnClear">Clear</button>
+      </div>
+
+      <div class="hint">
+        Send: <b>Ctrl/⌘ + Enter</b>. If response cuts off, use <b>Continue</b>.
+      </div>
+    </div>
   </div>
 
-  <div id="chat"></div>
-  <input id="input" placeholder="Answer starter or respond to probe...">
-  <button class="send" onclick="sendMessage()">Send</button>
-  <button class="analyze" onclick="finalizeType()">Finalize Type</button>
+  <div id="chat" aria-live="polite"></div>
+
+  <div class="card">
+    <textarea id="input" placeholder="Write freely. Use split mode to send as multiple posts."></textarea>
+    <div class="row" style="margin-top:10px;">
+      <button class="btn btn-send" id="btnSend">Send</button>
+      <button class="btn btn-amber" id="btnContinue">Continue</button>
+      <button class="btn btn-analyze" id="btnFinalize">Finalize Type</button>
+      <span class="footer" id="status"></span>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong id="modalTitle">Message</strong>
+        <div class="row">
+          <button class="btn btn-ghost" id="modalCopy">Copy</button>
+          <button class="btn btn-ghost" id="modalClose">Close</button>
+        </div>
+      </div>
+      <pre id="modalContent"></pre>
+    </div>
+  </div>
 
   <script>
-    // Full mbti-notes Spotting Data Embedded
+    // -----------------------
+    // 1) Spotting data (yours)
+    // -----------------------
     const spottingData = {
       "Si": {
-        domSigns: ["Feel at ease when sensory details match expectations", "Easily thrown by physical discomfort/new env", "Value past learning/experience", "Prefer procedures/proper conduct"],
-        notDomSigns: ["Careless with details", "Dislikes procedure", "Averse to authority", "Embraces novelty/risk/big ideas/sudden change", "Dismisses past exp", "Impractical/unrealistic/speculative"],
-        qs: ["Sensory details to liking/expectations? Ex of discomfort in unfamiliar w/ no prior knowledge?"]
+        domSigns: [
+          "Feel at ease when sensory details match expectations",
+          "Easily thrown by physical discomfort/new env",
+          "Value past learning/experience",
+          "Prefer procedures/proper conduct"
+        ],
+        notDomSigns: [
+          "Careless with details",
+          "Dislikes procedure",
+          "Averse to authority",
+          "Embraces novelty/risk/big ideas/sudden change",
+          "Dismisses past exp",
+          "Impractical/unrealistic/speculative"
+        ],
+        qs: ["Sensory details to liking/expectations? Example of discomfort in unfamiliar env with no prior knowledge?"]
       },
       "Se": {
         domSigns: ["Engage physical world directly", "Adapt to immediate opportunities", "Seek sensory stimulation/novelty"],
         notDomSigns: ["Avoid sensory overload", "Prefer abstract over concrete", "Detached from present"],
-        qs: ["Seize present action? Ex adapting chaos?"]
+        qs: ["Example: seized immediate action / adapted in chaos?"]
       },
       "Ni": {
         domSigns: ["Converge on foresight/patterns", "Strategic long-term vision", "Insightful predictions"],
         notDomSigns: ["Scattered/divergent ideas", "No big picture", "Short-term reactive"],
-        qs: ["Predict trends/insights? Ex vision guiding?"]
+        qs: ["Example: prediction/insight that guided actions?"]
       },
       "Ne": {
         domSigns: ["Diverge possibilities/brainstorm", "Novelty/connections", "Flexible ideas"],
         notDomSigns: ["Rigid routines", "Fear change", "Narrow focus"],
-        qs: ["Explore 'what if'? Ex novelty embrace?"]
+        qs: ["Example: explore 'what-if', connect ideas, novelty?"]
       },
       "Ti": {
         domSigns: ["Precise inner logic/dissection", "Consistency/accuracy", "Question assumptions"],
         notDomSigns: ["Accept authority w/o critique", "Efficiency over truth"],
-        qs: ["Dissect arguments for flaws? Ex precision?"]
+        qs: ["Example: dissected an argument/system for flaws?"]
       },
       "Te": {
         domSigns: ["Efficient systems/objective goals", "Organize for results", "Standards/measurables"],
         notDomSigns: ["Subjective theories", "Ignore practicality"],
-        qs: ["Structure for efficiency? Ex plans/results?"]
+        qs: ["Example: structured people/resources for measurable output?"]
       },
       "Fi": {
         domSigns: ["Inner morals/authenticity", "Personal values guide", "Empathize deeply self"],
         notDomSigns: ["Mirror group feelings", "Compromise core self"],
-        qs: ["'Right for me' vs group? Ex value clash?"]
+        qs: ["Example: chose 'right for me' despite group pressure?"]
       },
       "Fe": {
         domSigns: ["Group harmony/read social cues", "Adapt for others", "Emotional connection"],
         notDomSigns: ["Detached/blunt", "Ignore feelings"],
-        qs: ["Harmony priority? Ex read room?"]
+        qs: ["Example: read room & adjusted to keep harmony?"]
       }
     };
 
-    let messages = [{
-      role: 'system',
-      content: `MBTI spotter using ONLY spottingData JSON. Flow: 1. Starter answers → Spot leads (e.g., 'detail ex → Si'). 2. For EACH suspect dom: List ALL domSigns + qs w/ "life ex?". Probe ALL notDomSigns: "Match any? Ex → Exclude if yes". Score: "Dom: 4/4 signs yes, 0 notDom → Strong dom". Repeat for stack till confident. Finalize: Stack, evidence, dev. Concrete ex EVERY time. No vague.`
-    }];
+    // -----------------------
+    // 2) Conservative rule engine
+    //    Confirm dom only if ALL domSigns YES
+    //    Exclude dom only if ALL notDomSigns YES
+    // -----------------------
+    function conservativeVerdict(reportForFn) {
+      // reportForFn:
+      // {
+      //   dom: [{sign, status: "YES|NO|UNKNOWN"}...],
+      //   notDom: [{sign, status: "YES|NO|UNKNOWN"}...]
+      // }
+      const allDomYes = reportForFn.dom.length > 0 && reportForFn.dom.every(x => x.status === "YES");
+      const allNotDomYes = reportForFn.notDom.length > 0 && reportForFn.notDom.every(x => x.status === "YES");
 
-    async function sendMessage() {
-      const input = document.getElementById('input').value.trim();
-      if (!input) return;
-      messages.push({role: 'user', content: input});
-      addMessage('You', input);
-      document.getElementById('input').value = '';
-      await getAIResponse();
+      if (allDomYes) return { verdict: "CONFIRMED", badge: "b-confirm" };
+      if (allNotDomYes) return { verdict: "EXCLUDED", badge: "b-exclude" };
+      return { verdict: "POSSIBLE", badge: "b-poss" };
     }
 
-    async function getAIResponse() {
-      const chat = document.getElementById('chat');
-      chat.innerHTML += '<div class="msg ai-msg"><strong>AI:</strong> Thinking...</div>';
+    // -----------------------
+    // 3) Chat state + persistence
+    // -----------------------
+    const LS_KEY = "mbti_spotter_state_v2";
+    const LS_API = "mbti_spotter_groq_key";
+
+    const systemPrompt = `
+You are an MBTI cognitive-function spotter. Use ONLY the provided spottingData JSON.
+You must be conservative:
+- Only CONFIRM a function as dominant if ALL domSigns are supported by explicit user evidence (YES for each).
+- Only EXCLUDE a function as dominant if ALL notDomSigns are supported by explicit user evidence (YES for each).
+- Otherwise mark UNKNOWN or POSSIBLE.
+No vague claims: each YES/NO needs a short quote/summary of the user's evidence.
+
+Output format MUST be JSON in a single code block (no extra commentary outside).
+Schema:
+{
+  "function_reports": {
+    "Ti": {
+      "dom": [{"sign":"...", "status":"YES|NO|UNKNOWN", "evidence":"..."}],
+      "notDom": [{"sign":"...", "status":"YES|NO|UNKNOWN", "evidence":"..."}],
+      "followups": ["next question 1", "next question 2"]
+    },
+    "...": { ... }
+  },
+  "top_suspects": ["Ti","Ne", "..."],
+  "notes": "brief, grounded"
+}
+
+Rules:
+- If user hasn't provided evidence, status=UNKNOWN.
+- Do NOT infer from stereotypes.
+- Ask follow-up questions that directly target missing signs.
+`;
+
+    let messages = [
+      { role: "system", content: systemPrompt + "\n\nspottingData:\n" + JSON.stringify(spottingData) }
+    ];
+
+    function saveState() {
+      localStorage.setItem(LS_KEY, JSON.stringify({ messages }));
+    }
+    function loadState() {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
       try {
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {'Authorization': `Bearer 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`, 'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
-            messages: messages,
-            max_tokens: 800,
-            temperature: 0.2  // Low for precision
-          })
-        });
-        const data = await response.json();
-        const reply = data.choices[0].message.content;
-        messages.push({role: 'assistant', content: reply});
-        document.querySelector('.ai-msg:last-child').innerHTML = `<strong>AI:</strong> ${reply.replace(/\n/g, '<br>')}`;
-      } catch (e) {
-        addMessage('Error', e.message);
+        const data = JSON.parse(raw);
+        if (data?.messages?.length) messages = data.messages;
+      } catch {}
+    }
+
+    // -----------------------
+    // 4) UI helpers
+    // -----------------------
+    const chatEl = document.getElementById("chat");
+    const inputEl = document.getElementById("input");
+    const statusEl = document.getElementById("status");
+
+    function escapeHTML(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function appendMessage(role, text) {
+      const div = document.createElement("div");
+      div.className = "msg " + (role === "user" ? "user-msg" : "ai-msg");
+      const who = role === "user" ? "You" : "AI";
+      const now = new Date().toLocaleString();
+
+      div.innerHTML = `
+        <div class="meta">
+          <strong>${escapeHTML(who)}</strong>
+          <small>${escapeHTML(now)}</small>
+        </div>
+        <div class="content">${escapeHTML(text).replace(/\n/g, "<br>")}</div>
+        <div class="msg-actions">
+          <button class="chip" data-action="open">Open</button>
+          <button class="chip" data-action="copy">Copy</button>
+        </div>
+      `;
+
+      div.querySelector('[data-action="open"]').addEventListener("click", () => openModal(who, text));
+      div.querySelector('[data-action="copy"]').addEventListener("click", async () => {
+        await navigator.clipboard.writeText(text);
+        statusEl.textContent = "Copied.";
+        setTimeout(() => statusEl.textContent = "", 900);
+      });
+
+      chatEl.appendChild(div);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      return div;
+    }
+
+    // Modal
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalContent = document.getElementById("modalContent");
+    const modalClose = document.getElementById("modalClose");
+    const modalCopy = document.getElementById("modalCopy");
+
+    let lastModalText = "";
+
+    function openModal(title, text) {
+      lastModalText = text;
+      modalTitle.textContent = title;
+      modalContent.textContent = text;
+      modal.classList.add("open");
+    }
+    modalClose.addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("open");
+    });
+    modalCopy.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(lastModalText);
+      statusEl.textContent = "Copied.";
+      setTimeout(() => statusEl.textContent = "", 900);
+    });
+
+    // -----------------------
+    // 5) Input splitting
+    // -----------------------
+    function splitInput(raw) {
+      const mode = document.getElementById("splitMode").value;
+      const t = raw.trim();
+      if (!t) return [];
+      if (mode === "single") return [t];
+
+      if (mode === "semicolon") {
+        // split on semicolons, but keep paragraphs intact
+        return t.split(";").map(s => s.trim()).filter(Boolean);
       }
-      chat.scrollTop = chat.scrollHeight;
+
+      // blankline
+      return t.split(/\n\s*\n+/).map(s => s.trim()).filter(Boolean);
     }
 
-    function addMessage(sender, text) {
-      const chat = document.getElementById('chat');
-      const div = document.createElement('div');
-      div.className = `msg ${sender === 'You' ? 'user-msg' : 'ai-msg'}`;
-      div.innerHTML = `<strong>${sender}:</strong> ${text.replace(/\n/g, '<br>')}`;
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
+    // -----------------------
+    // 6) Groq streaming client
+    // -----------------------
+    function getSettings() {
+      const apiKey = document.getElementById("apiKey").value.trim();
+      const model = document.getElementById("model").value;
+      const maxTokens = Number(document.getElementById("maxTokens").value || 1800);
+      const temperature = Number(document.getElementById("temp").value || 0.2);
+      return { apiKey, model, maxTokens, temperature };
     }
 
-    async function finalizeType() {
-      messages.push({role: 'user', content: 'Finalize type: Stack from all signs/ex, evidence, rule-outs, development.'});
-      addMessage('You', 'Finalize Type');
-      await getAIResponse();
+    async function groqStreamChat() {
+      const { apiKey, model, maxTokens, temperature } = getSettings();
+      if (!apiKey) throw new Error("Missing API key.");
+      statusEl.textContent = "Thinking… (streaming)";
+      const placeholder = appendMessage("assistant", "Thinking…");
+
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          max_tokens: maxTokens,
+          temperature,
+          stream: true
+        })
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Groq error ${res.status}: ${errText}`);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+      let full = "";
+
+      // Replace placeholder as we stream
+      const contentEl = placeholder.querySelector(".content");
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        // Groq streams as SSE: lines with "data: {...}\n\n"
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() || "";
+
+        for (const part of parts) {
+          const line = part.trim();
+          if (!line.startsWith("data:")) continue;
+          const dataStr = line.slice(5).trim();
+          if (dataStr === "[DONE]") continue;
+
+          try {
+            const json = JSON.parse(dataStr);
+            const delta = json?.choices?.[0]?.delta?.content || "";
+            if (delta) {
+              full += delta;
+              contentEl.innerHTML = escapeHTML(full).replace(/\n/g, "<br>");
+              chatEl.scrollTop = chatEl.scrollHeight;
+            }
+          } catch {
+            // ignore partial JSON
+          }
+        }
+      }
+
+      // finalize message
+      placeholder.querySelector(".meta strong").textContent = "AI";
+      placeholder.querySelector(".content").innerHTML = escapeHTML(full || "[No content]").replace(/\n/g, "<br>");
+
+      messages.push({ role: "assistant", content: full });
+      saveState();
+      statusEl.textContent = "";
+      return full;
+    }
+
+    // -----------------------
+    // 7) JSON parsing + verdict display
+    // -----------------------
+    function extractJSONFromCodeBlock(text) {
+      // Expect: ```json ... ```
+      const m = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+      if (!m) return null;
+      try { return JSON.parse(m[1]); } catch { return null; }
+    }
+
+    function renderVerdicts(json) {
+      const body = document.getElementById("verdictBody");
+      const reports = json?.function_reports;
+      if (!reports) {
+        body.textContent = "No structured output detected. (Model didn’t return JSON.)";
+        return;
+      }
+
+      const rows = [];
+      for (const fn of Object.keys(spottingData)) {
+        const r = reports[fn];
+        if (!r) continue;
+
+        const verdict = conservativeVerdict({
+          dom: (r.dom || []).map(x => ({ status: x.status })),
+          notDom: (r.notDom || []).map(x => ({ status: x.status }))
+        });
+
+        rows.push(`
+          <div style="margin:6px 0;">
+            <span class="badge ${verdict.badge}">${verdict.verdict}</span>
+            <b>${fn}</b>
+            <span style="color:var(--muted); font-size:12px;">
+              (confirm requires ALL domSigns YES; exclude requires ALL notDomSigns YES)
+            </span>
+          </div>
+        `);
+      }
+
+      body.innerHTML = rows.join("") || "No function reports found.";
+    }
+
+    // -----------------------
+    // 8) Actions
+    // -----------------------
+    async function send() {
+      const raw = inputEl.value;
+      const chunks = splitInput(raw);
+      if (!chunks.length) return;
+
+      // push each chunk as separate user message
+      for (const chunk of chunks) {
+        messages.push({ role: "user", content: chunk });
+        appendMessage("user", chunk);
+      }
+      inputEl.value = "";
+      saveState();
+
+      try {
+        const reply = await groqStreamChat();
+        const json = extractJSONFromCodeBlock(reply);
+        if (json) renderVerdicts(json);
+      } catch (e) {
+        appendMessage("assistant", "Error: " + String(e.message || e));
+        statusEl.textContent = "";
+      }
+    }
+
+    async function finalize() {
+      const cmd = "Finalize: return JSON report for ALL functions using spottingData. Mark each sign YES/NO/UNKNOWN with evidence.";
+      messages.push({ role: "user", content: cmd });
+      appendMessage("user", "Finalize Type");
+      saveState();
+
+      try {
+        const reply = await groqStreamChat();
+        const json = extractJSONFromCodeBlock(reply);
+        if (json) renderVerdicts(json);
+      } catch (e) {
+        appendMessage("assistant", "Error: " + String(e.message || e));
+        statusEl.textContent = "";
+      }
+    }
+
+    async function cont() {
+      const cmd = "Continue from where you left off. Keep the same JSON schema. Do not repeat earlier text.";
+      messages.push({ role: "user", content: cmd });
+      appendMessage("user", "Continue");
+      saveState();
+
+      try {
+        const reply = await groqStreamChat();
+        const json = extractJSONFromCodeBlock(reply);
+        if (json) renderVerdicts(json);
+      } catch (e) {
+        appendMessage("assistant", "Error: " + String(e.message || e));
+        statusEl.textContent = "";
+      }
+    }
+
+    function exportChat() {
+      const md = messages
+        .filter(m => m.role !== "system")
+        .map(m => `### ${m.role.toUpperCase()}\n\n${m.content}\n`)
+        .join("\n---\n\n");
+
+      const blob = new Blob([md], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "mbti-spotter-chat.md";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearChat() {
+      if (!confirm("Clear chat and local saved state?")) return;
+      messages = [{ role: "system", content: systemPrompt + "\n\nspottingData:\n" + JSON.stringify(spottingData) }];
+      localStorage.removeItem(LS_KEY);
+      chatEl.innerHTML = "";
+      document.getElementById("verdictBody").textContent = "Run “Finalize Type” to populate verdicts.";
+      statusEl.textContent = "";
+    }
+
+    // -----------------------
+    // 9) Bind UI + init
+    // -----------------------
+    document.getElementById("btnSend").addEventListener("click", send);
+    document.getElementById("btnFinalize").addEventListener("click", finalize);
+    document.getElementById("btnContinue").addEventListener("click", cont);
+    document.getElementById("btnExport").addEventListener("click", exportChat);
+    document.getElementById("btnClear").addEventListener("click", clearChat);
+
+    inputEl.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") send();
+    });
+
+    // Load persisted state + API key
+    loadState();
+    const storedKey = localStorage.getItem(LS_API);
+    if (storedKey) document.getElementById("apiKey").value = storedKey;
+
+    document.getElementById("apiKey").addEventListener("change", () => {
+      localStorage.setItem(LS_API, document.getElementById("apiKey").value.trim());
+    });
+
+    // Render existing chat from loaded messages (excluding system)
+    for (const m of messages) {
+      if (m.role === "system") continue;
+      appendMessage(m.role, m.content);
     }
   </script>
 </body>
