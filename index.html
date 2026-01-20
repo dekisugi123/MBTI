@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBTI Cognitive Functions — Dom/Aux + Tert/Inf Self-Check</title>
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --panel:#12161c;
+      --panel2:#0f1318;
+      --text:#e9eef5;
+      --muted:#a9b4c2;
+      --accent:#7cc4ff;
+      --accent2:#a8ffbf;
+      --warn:#ffd27c;
+      --danger:#ff7c7c;
+      --border:#263040;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 800px at 20% 0%, #141a22 0%, var(--bg) 60%);
+      color: var(--text);
+    }
+    a{ color: var(--accent); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    header{
+      position: sticky;
+      top:0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(11,13,16,.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 16px;
+    }
+    .top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap: wrap;
+    }
+    h1{
+      font-size: 18px;
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      max-width: 780px;
+    }
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .btn{
+      background: linear-gradient(180deg, #1a2230, #131a24);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    }
+    .btn:hover{ border-color: #3a4b63; }
+    .btn.primary{
+      background: linear-gradient(180deg, #245b88, #1a3552);
+      border-color: #2f78b3;
+    }
+    .btn.ghost{
+      background: transparent;
+      box-shadow:none;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(18,22,28,.65);
+    }
+    .dot{ width:8px;height:8px;border-radius:999px;background: var(--accent); display:inline-block; }
+
+    main .wrap{ padding: 18px 16px 48px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media(min-width: 920px){
+      .grid.two{ grid-template-columns: 1.2fr .8fr; }
+      .grid.three{ grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(18,22,28,.95), rgba(15,19,24,.95));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h2{
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      letter-spacing: .2px;
+    }
+    .card p{
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .note{
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      background: rgba(124,196,255,.08);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .warn{
+      border-left-color: var(--warn);
+      background: rgba(255,210,124,.08);
+    }
+    .danger{
+      border-left-color: var(--danger);
+      background: rgba(255,124,124,.08);
+    }
+    .small{ font-size: 12px; color: var(--muted); }
+    .step{
+      display:none;
+    }
+    .step.active{
+      display:block;
+    }
+
+    details{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(18,22,28,.7);
+      overflow: hidden;
+    }
+    details summary{
+      cursor:pointer;
+      padding: 12px 12px;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      user-select:none;
+    }
+    details summary::-webkit-details-marker{ display:none; }
+    .fnTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size: 14px;
+      margin:0;
+    }
+    .badge{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(124,196,255,.12);
+      border: 1px solid rgba(124,196,255,.3);
+      color: var(--text);
+    }
+    .badge.j{ background: rgba(168,255,191,.10); border-color: rgba(168,255,191,.28); }
+    .badge.neg{ background: rgba(255,210,124,.10); border-color: rgba(255,210,124,.28); }
+
+    .section{
+      padding: 0 12px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .q{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+      background: rgba(15,19,24,.65);
+    }
+    .q h3{
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin: 10px 0;
+    }
+    label{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    input[type="range"]{
+      width: 240px;
+      accent-color: var(--accent);
+    }
+    select, textarea, input[type="text"]{
+      background: rgba(10,12,15,.9);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 10px;
+      font-size: 13px;
+      outline:none;
+    }
+    textarea{
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.35;
+    }
+    .kpi{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+    .kpi .pill{ background: rgba(15,19,24,.65); }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(10,12,15,.9);
+      overflow:hidden;
+    }
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      color: var(--text);
+      overflow:hidden;
+      border-radius: 14px;
+    }
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th{
+      text-align:left;
+      color: var(--muted);
+      font-weight: 600;
+      background: rgba(15,19,24,.65);
+    }
+    tr:last-child td{ border-bottom: none; }
+    .right{ text-align:right; }
+    .muted{ color: var(--muted); }
+    .mono{ font-family: var(--mono); }
+    .typeCard{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(15,19,24,.65);
+      margin-top: 10px;
+    }
+    .typeHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+    .typeName{
+      font-size: 14px;
+      font-weight: 700;
+      margin:0;
+    }
+    .stack{
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 12px;
+      margin: 6px 0 0 0;
+    }
+    .split{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 920px){
+      .split{ grid-template-columns: 1fr 1fr; }
+    }
+    .footer{
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .inline{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .hr{
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+    .toast{
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(18,22,28,.95);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--text);
+      display:none;
+      max-width: 360px;
+      z-index: 99;
+    }
+    .toast.show{ display:block; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Dom/Aux + Tert/Inf Self-Check (Cognitive Functions)</h1>
+        <p class="sub">
+          A self-reflection tool (static, runs fully in your browser). Uses open-ended examples + recurrence scoring,
+          then matches your profile against standard 16-type function stacks.
+          <span class="mono">Not a diagnosis.</span>
+        </p>
+        <div style="margin-top:10px" class="kpi">
+          <span class="pill"><span class="dot"></span>Autosaves locally</span>
+          <span class="pill"><span class="dot" style="background:var(--accent2)"></span>Exports JSON + LLM prompt</span>
+          <span class="pill"><span class="dot" style="background:var(--warn)"></span>Downweights “stress/grip” answers</span>
+        </div>
+      </div>
+      <div class="nav">
+        <button class="btn ghost" data-nav="instructions">Instructions</button>
+        <button class="btn ghost" data-nav="questions">Questionnaire</button>
+        <button class="btn primary" data-nav="results">Results</button>
+        <button class="btn ghost" data-nav="export">Export / LLM</button>
+        <button class="btn" id="btnReset">Reset</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section id="step-instructions" class="step active">
+      <div class="grid two">
+        <div class="card">
+          <h2>How to use this (so it actually works)</h2>
+          <div class="note">
+            For each prompt, write a <b>recurring real-life pattern</b> (ideally 2–3 instances across time).
+            If it’s mostly a one-off, mark recurrence as “one-off” so it gets downweighted.
+          </div>
+
+          <p><b>Rating tip:</b> your slider is “how often this describes you across life,” not “can you do this sometimes?”</p>
+
+          <p><b>Stress/grip checkbox:</b> if the behavior mainly appears when you’re stressed, check it. The tool will downweight it, because lower functions can spike under stress.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">
+            Source inspiration: <span class="mono">mbti-notes.tumblr.com/theory</span>.
+            This tool is only a structured journaling assistant.
+          </p>
+
+          <div class="row">
+            <button class="btn primary" data-nav="questions">Start the questionnaire</button>
+            <button class="btn" id="btnDemoFill">(Optional) Fill demo data</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>What “Dom/Aux/Tert/Inf” means (in this tool)</h2>
+          <p>
+            You’ll answer prompts for all eight functions. Then we:
+          </p>
+          <ul class="small" style="line-height:1.6; color: var(--muted); margin-top:8px;">
+            <li>Compute an evidence score (0–100) per function.</li>
+            <li>Match your scores to standard 16-type stacks (e.g., ISTJ = Si–Te–Fi–Ne).</li>
+            <li>Show top candidate stacks + how your function scores support <b>Dom/Aux</b>, and whether <b>Tert/Inf</b> are plausibly lower.</li>
+          </ul>
+
+          <div class="note warn" style="margin-top:10px;">
+            If your top 2 candidate stacks are close, you should re-check the “differentiators”:
+            usually Aux and Tert (e.g., Te vs Fe, Ti vs Fi).
+          </div>
+
+          <p class="footer">
+            This is <b>not</b> a scientific personality test. Treat as a guided reflection structure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="step-questions" class="step">
+      <div class="card">
+        <h2>Questionnaire</h2>
+        <p>
+          For each function: (1) rate the “NOT dominant” anti-signs, then (2) answer the prompts with examples.
+          Everything autosaves locally.
+        </p>
+        <div id="functionsContainer" class="grid"></div>
+
+        <div class="row" style="margin-top:14px;">
+          <button class="btn primary" data-nav="results">Compute results</button>
+          <span class="small muted">You can compute anytime; you don’t need to finish all functions.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="step-results" class="step">
+      <div class="grid two">
+        <div class="card">
+          <h2>Your function evidence (ranked)</h2>
+          <div id="fnRank"></div>
+          <div class="hr"></div>
+          <div id="fnTable"></div>
+        </div>
+
+        <div class="card">
+          <h2>Best-matching stacks (Dom/Aux + Tert/Inf)</h2>
+          <div id="typeRank"></div>
+          <div class="hr"></div>
+          <div id="tieBreak"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h2>How to “confirm” Tert/Inf (practically)</h2>
+        <div class="note">
+          Look for: (a) your Tert being “available but inconsistent,” and (b) your Inf being mostly “stress-activated”
+          or hard to sustain. If your “Inferior” function scored high and you marked it as lifelong (not stress),
+          that’s a flag that your dominant/aux guess may be wrong.
+        </div>
+        <p class="small muted">
+          Use the “Export / LLM” tab if you want an LLM to summarize your examples and point out contradictions.
+        </p>
+      </div>
+    </section>
+
+    <section id="step-export" class="step">
+      <div class="grid two">
+        <div class="card">
+          <h2>Export your data</h2>
+          <p class="small muted">Exports include all ratings + your written examples.</p>
+          <div class="row">
+            <button class="btn primary" id="btnDownloadJson">Download JSON</button>
+            <button class="btn" id="btnCopyJson">Copy JSON</button>
+          </div>
+          <div class="hr"></div>
+          <p class="small muted">You can also import previously exported JSON:</p>
+          <div class="row">
+            <input type="file" id="jsonFile" accept="application/json" />
+            <button class="btn" id="btnImportJson">Import</button>
+          </div>
+          <p class="footer">
+            Privacy: everything stays in your browser unless you export or copy it.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>LLM helper (optional)</h2>
+          <p>
+            If you want AI interpretation, the safest static-site approach is:
+            <b>copy your answers</b> and ask an LLM to summarize and map evidence to functions.
+          </p>
+          <div class="row">
+            <button class="btn primary" id="btnMakeLlmPrompt">Generate LLM prompt</button>
+            <button class="btn" id="btnCopyLlmPrompt">Copy prompt</button>
+          </div>
+          <textarea id="llmPrompt" placeholder="Click “Generate LLM prompt” to create a structured prompt you can paste into ChatGPT."></textarea>
+
+          <div class="note warn" style="margin-top:10px;">
+            Don’t paste private identifiers. LLMs can be persuasive even when wrong—use it as a “pattern mirror,” not truth.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/** ---------------------------
+ *  Data: Function prompts
+ *  (From mbti-notes theory guide)
+ *  --------------------------- */
+const QUESTION_BANK = {
+  Si: {
+    title: "Introverted Sensing (Si)",
+    kind: "Perceiving • Introverted",
+    notDominant: [
+      "careless with details; dislikes procedure; averse to authority",
+      "easily embraces novelty, risk, big ideas, or sudden change",
+      "doesn’t value or easily dismisses past learning/experience",
+      "often exhibits impractical/unrealistic/speculative attitude"
+    ],
+    prompts: [
+      "Do you feel most at ease when sensory details match your expectations? Flip: are you easily thrown by physical discomfort, inconsistent sensory details, or unfamiliar environments—especially without “proper” procedures?",
+      "Is it important to proceed cautiously in unfamiliar situations—relying on established steps/rules/methods and seeing untested approaches as risky?",
+      "Are you a creature of habit who finds comfort in a set routine—and reacts negatively/resistantly when it’s disrupted?",
+      "When low, do you harp on little details, complain that things aren’t as they should be, or contrast the present negatively with positive past experiences? Does precedent strongly influence decisions?",
+      "Do you often dislike people who seem vague, impractical, ungrounded, inconsistent, irresponsible, careless, oblivious, bombastic?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): slow, boring, conventional, closed-minded, unadventurous, finicky, worrywart, inflexible, oversensitive to minor discomforts?"
+    ]
+  },
+  Ni: {
+    title: "Introverted Intuition (Ni)",
+    kind: "Perceiving • Introverted",
+    notDominant: [
+      "not contemplative; doesn’t speculate about how things will go",
+      "no sense of aspiration; doesn’t think about calling/purpose/direction",
+      "doesn’t require structure; happy to live by whims/urges",
+      "literal; likes handling details; enjoys mundane conversation"
+    ],
+    prompts: [
+      "Do you feel best with a strong sense of purpose? Flip: do you feel uneasy/adrift without a significant aim?",
+      "Is it important to understand the “grand scheme”? Do you synthesize information into underlying essence or future implications—and struggle to decide without a guiding principle?",
+      "Do you often visualize an “ideal” state and delay gratification for it? Are you prone to perfectionism/controlling tendencies in pursuit of an ideal?",
+      "When low, do you judge life as shallow/meaningless, and suffer when the future seems uncertain/negative/below expectation?",
+      "Do you often dislike people who seem self-limiting, narrow-minded, shallow, shortsighted, brash, fickle?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): vague, unrealistic, too intense/extreme, overserious, overthinking, hard to know, demanding/hard to please?"
+    ]
+  },
+  Se: {
+    title: "Extraverted Sensing (Se)",
+    kind: "Perceiving • Extraverted",
+    notDominant: [
+      "dislikes or has low tolerance for physical/sensory stimulation",
+      "often contemplates implications/contingencies/deeper meaning",
+      "likes/needs rules; respects authority; avoids risky behavior",
+      "chases random/impractical ideas; ignores concrete evidence"
+    ],
+    prompts: [
+      "Do you have high tolerance for excitement and seek engaging/stimulating activities? Flip: do you suffer boredom/restlessness/FOMO when little is happening?",
+      "Is it important to quickly join/participate without hesitation—prioritizing fun/pleasure? Is your initial reaction to restrictions usually defiance?",
+      "Are you playful, spontaneous, open to new situations, naturally saying “yes” to invitations—and enjoy future uncertainty as a surprise?",
+      "When low, do you seek physical distraction/sensory pleasure or create drama/excitement? Does sitting still too long to look within feel dreadful?",
+      "Do you often dislike people who seem “all talk no action,” overcomplicated, timid, conventional, inhibited, uptight?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): impulsive, superficial, loud/showboat, aimless, childish, not serious?"
+    ]
+  },
+  Ne: {
+    title: "Extraverted Intuition (Ne)",
+    kind: "Perceiving • Extraverted",
+    notDominant: [
+      "rarely has new ideas; refuses to entertain possibilities",
+      "enjoys routine, repetitive practice, logistical planning",
+      "must think through every contingency before acting",
+      "unwillingness to dream big; no knack for big-picture thinking"
+    ],
+    prompts: [
+      "Is your mind full of diverse ideas/dreams you want to pursue? Flip: do you feel frustrated when your ideas are dismissed or can’t be realized?",
+      "Is it important to be open-minded/resourceful, generating new ideas/solutions—and viewing old methods as stale/ineffective?",
+      "Are you optimistic/encouraging, perking up at interesting possibilities—loving brainstorming with people?",
+      "When low, do you fight off hopelessness/pessimism? Does feeling stuck (little possibility for change) feel dire?",
+      "Do you often dislike people who seem unimaginative, conventional/traditional, nitpicky/rigid, too literal, pessimistic?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): scattered, unreliable, inconsistent, careless, irresponsible, manipulative (getting others to handle details)?"
+    ]
+  },
+  Ti: {
+    title: "Introverted Thinking (Ti)",
+    kind: "Judging • Introverted",
+    notDominant: [
+      "isn’t aware of or doesn’t care about logical fallacies/contradictions",
+      "wary of criticism or feeling challenged/invalidated by others",
+      "relies heavily on routine/order/structure/organizing to function",
+      "easily confused; often suffers conflicted feelings/emotions"
+    ],
+    prompts: [
+      "Do you have a technical mind—troubleshooting with precision? Flip: do you get confused by situations defying simple mechanisms/formulas?",
+      "Is it important to handle problems on your own—keeping things clear/simple? Are “complications” met with confusion or curiosity?",
+      "Are you straightforward, factual, private about interests, and stay out of situations that don’t involve you—finding it hard to understand why people get worked up over inconsequential things?",
+      "When low, do you get stuck on a particular problem or bored without stimulation—and feel reinvigorated by mastering a skill or setting a challenge?",
+      "Do you often dislike people who seem dogmatic/ideological, irrational, manipulative, overemotional, unwilling to admit errors?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): indifferent, asocial, emotionally distant/unavailable, awkward, arrogant, inconsiderate?"
+    ]
+  },
+  Fi: {
+    title: "Introverted Feeling (Fi)",
+    kind: "Judging • Introverted",
+    notDominant: [
+      "weak sense of identity; weak preferences/attachments; fuzzy values",
+      "not very affected by the personal; can function fine even if unhappy",
+      "wary of emotional intensity; must justify strong feelings/opinions",
+      "poor emotional awareness; believes feelings are biased/unreliable"
+    ],
+    prompts: [
+      "Do your feelings strongly inform your attitude, preferences, and decisions? Flip: is it extremely hard to ignore feelings or go against them?",
+      "Is it important to honor your feelings/values in everything? Do you get offended by environments that don’t honor uniqueness—seeing impersonal settings as “soulless” and wanting to disrupt status quo?",
+      "Are you always in touch with how you feel and enjoy creative expression of feelings—linking feeling to humanity?",
+      "When low, do you feel alienated and need lots of alone time to nurse feelings—struggling to be productive until emotionally settled?",
+      "Do you often dislike people who seem conforming/by-the-book, inauthentic, intrusive, disrespectful, unfeeling, amoral?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): oversensitive, self-righteous, moralizing, fragile, unconfident, hard to reason with?"
+    ]
+  },
+  Te: {
+    title: "Extraverted Thinking (Te)",
+    kind: "Judging • Extraverted",
+    notDominant: [
+      "passive; not a natural doer/leader/organizer/planner",
+      "convoluted, unconfident, or indecisive speech/thinking",
+      "hesitant/slow to judge/conclude/solve/finish",
+      "torn about whether stating facts might hurt"
+    ],
+    prompts: [
+      "Do you prize efficiency and goal-setting? Flip: does it bother you when problems remain unresolved and nobody takes charge?",
+      "Is it important to change what doesn’t work, resolve problems quickly/cleanly, avert disasters—and thrive in challenging/competitive environments?",
+      "Are you tough-minded, advising others to work smart and be sensible—struggling to understand “irrational/unproductive” decisions?",
+      "When low, do you feel better by organizing, leading, strategizing, and problem-solving your way back on track?",
+      "Do you often dislike people who seem lazy, indecisive, incompetent, melodramatic, oversensitive, sentimental?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): blunt, judgmental, domineering, overconfident, unfeeling, bad listener?"
+    ]
+  },
+  Fe: {
+    title: "Extraverted Feeling (Fe)",
+    kind: "Judging • Extraverted",
+    notDominant: [
+      "no awareness of others’ feelings, social mores, or social problems",
+      "natural loner; neglects to include loved ones in decisions",
+      "transactional attitude; only values people for usefulness",
+      "doesn’t think twice about putting own needs first"
+    ],
+    prompts: [
+      "Do you feel best when everyone gets along, is treated fairly, and emotionally supports each other? Flip: are you brought down by harsh/unsupportive social environments?",
+      "Is it important to feel emotional connection—hoping important relationships involve care/acceptance and deepen over time?",
+      "Are you considerate and naturally mirror emotions to get on the same page—preferring diplomacy/compromise and judging disagreeable people as morally “off”?",
+      "When low, do you crave social connection/affirmation and feel guilt/shame asking for care—yet feel better after receiving it?",
+      "Do you often dislike people who seem selfish, aloof, ungrateful, harsh, condescending, dismissive?",
+      "Have you repeatedly been labeled (or feel sensitive to being labeled): meddlesome, attention-seeking, people-pleasing, inauthentic, “mindreading,” a pushover/doormat?"
+    ]
+  }
+};
+
+const TYPE_STACKS = {
+  ISTJ: ["Si","Te","Fi","Ne"],
+  ISFJ: ["Si","Fe","Ti","Ne"],
+  INFJ: ["Ni","Fe","Ti","Se"],
+  INTJ: ["Ni","Te","Fi","Se"],
+  ISTP: ["Ti","Se","Ni","Fe"],
+  ISFP: ["Fi","Se","Ni","Te"],
+  INFP: ["Fi","Ne","Si","Te"],
+  INTP: ["Ti","Ne","Si","Fe"],
+  ESTP: ["Se","Ti","Fe","Ni"],
+  ESFP: ["Se","Fi","Te","Ni"],
+  ENFP: ["Ne","Fi","Te","Si"],
+  ENTP: ["Ne","Ti","Fe","Si"],
+  ESTJ: ["Te","Si","Ne","Fi"],
+  ESFJ: ["Fe","Si","Ne","Ti"],
+  ENFJ: ["Fe","Ni","Se","Ti"],
+  ENTJ: ["Te","Ni","Se","Fi"]
+};
+
+const POSITION_NAMES = ["Dominant","Auxiliary","Tertiary","Inferior"];
+const POSITION_WEIGHTS = [1.00, 0.85, 0.60, 0.40];
+
+const STATE_KEY = "mbti_notes_domaux_v1";
+
+function defaultState(){
+  const responses = {};
+  for (const fnId of Object.keys(QUESTION_BANK)){
+    responses[fnId] = {
+      anti: QUESTION_BANK[fnId].notDominant.map(()=>({freq:0})),
+      prompts: QUESTION_BANK[fnId].prompts.map(()=>({freq:0, rec:"repeated", stress:false, example:""}))
+    };
+  }
+  return {
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    responses
+  };
+}
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STATE_KEY);
+    if (!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    // very light migration safety
+    if (!parsed.responses) return defaultState();
+    return parsed;
+  }catch(e){
+    return defaultState();
+  }
+}
+
+function saveState(){
+  state.updatedAt = new Date().toISOString();
+  localStorage.setItem(STATE_KEY, JSON.stringify(state));
+}
+
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), 1900);
+}
+
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+function calcFunction(fnId){
+  const fn = QUESTION_BANK[fnId];
+  const r = state.responses[fnId];
+
+  // Positive prompts
+  let pos = 0;
+  const posMax = fn.prompts.length * 4;
+
+  let exampleGood = 0;
+
+  for (let i=0;i<fn.prompts.length;i++){
+    const item = r.prompts[i] || {freq:0, rec:"repeated", stress:false, example:""};
+    const freq = Number(item.freq||0);
+    const rec = item.rec || "repeated";
+    const stress = !!item.stress;
+    const example = (item.example || "").trim();
+
+    const recW = (rec==="lifelong") ? 1.00 : (rec==="repeated" ? 0.85 : 0.60);
+    const stressW = stress ? 0.70 : 1.00;
+
+    pos += freq * recW * stressW;
+
+    if (example.length >= 40) exampleGood++;
+  }
+
+  const posNorm = (posMax > 0) ? (pos / posMax) : 0;
+
+  // Negative “NOT dominant” anti-signs
+  let neg = 0;
+  const negMax = fn.notDominant.length * 4;
+  for (let i=0;i<fn.notDominant.length;i++){
+    const item = (r.anti && r.anti[i]) ? r.anti[i] : {freq:0};
+    neg += Number(item.freq||0);
+  }
+  const negNorm = (negMax > 0) ? (neg / negMax) : 0;
+
+  // Completeness multiplier (examples)
+  const completeness = fn.prompts.length ? (exampleGood / fn.prompts.length) : 0;
+  const completenessMult = 0.80 + 0.20 * clamp(completeness, 0, 1);
+
+  // Final score in [0,100]
+  // Subtract anti-signs moderately: if neg is high, it strongly reduces “dominant” likelihood.
+  let score01 = posNorm - 0.65 * negNorm;
+  score01 = clamp(score01, 0, 1) * completenessMult;
+
+  return {
+    score: Math.round(score01 * 100),
+    posNorm,
+    negNorm,
+    completeness
+  };
+}
+
+function calcAllFunctions(){
+  const out = {};
+  for (const fnId of Object.keys(QUESTION_BANK)){
+    out[fnId] = calcFunction(fnId);
+  }
+  return out;
+}
+
+function calcTypeScores(fnScores){
+  const types = Object.keys(TYPE_STACKS);
+  const raw = {};
+  for (const t of types){
+    const stack = TYPE_STACKS[t];
+    let sum = 0;
+    let wSum = 0;
+    for (let i=0;i<stack.length;i++){
+      const fn = stack[i];
+      const w = POSITION_WEIGHTS[i];
+      sum += w * (fnScores[fn]?.score ?? 0);
+      wSum += w;
+    }
+    raw[t] = (wSum>0) ? (sum / wSum) : 0;
+  }
+  return raw;
+}
+
+function softmax(scoreMap, temperature=8){
+  const entries = Object.entries(scoreMap);
+  const max = Math.max(...entries.map(e=>e[1]));
+  const exps = entries.map(([k,v]) => [k, Math.exp((v-max)/temperature)]);
+  const denom = exps.reduce((a,[_k,e])=>a+e,0);
+  const probs = {};
+  for (const [k,e] of exps){
+    probs[k] = denom ? (e/denom) : 0;
+  }
+  return probs;
+}
+
+function el(tag, attrs={}, children=[]){
+  const node = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)){
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
+    else if (k === "html") node.innerHTML = v;
+    else node.setAttribute(k, v);
+  }
+  for (const c of children){
+    if (typeof c === "string") node.appendChild(document.createTextNode(c));
+    else if (c) node.appendChild(c);
+  }
+  return node;
+}
+
+function ratingLabel(n){
+  return ["Never","Rarely","Sometimes","Often","Almost always"][Number(n)||0];
+}
+
+function renderFunctions(){
+  const container = document.getElementById("functionsContainer");
+  container.innerHTML = "";
+
+  for (const fnId of Object.keys(QUESTION_BANK)){
+    const fn = QUESTION_BANK[fnId];
+    const resp = state.responses[fnId];
+
+    const det = el("details", {}, []);
+    const summary = el("summary", {}, [
+      el("div", {class:"fnTitle"}, [
+        el("span", {class:"badge"}, [fnId]),
+        el("span", {}, [fn.title]),
+        el("span", {class:"badge j"}, [fn.kind])
+      ]),
+      el("span", {class:"badge neg"}, ["Open / Close"])
+    ]);
+
+    det.appendChild(summary);
+
+    const sec = el("div", {class:"section"}, []);
+    sec.appendChild(el("p", {class:"small muted"}, [
+      "Step 1: rate anti-signs (“NOT dominant”). Step 2: answer prompts with recurring examples."
+    ]));
+
+    // Anti-signs
+    sec.appendChild(el("div", {class:"q"}, [
+      el("h3", {}, ["Anti-signs (“NOT dominant”) — rate how often this describes you"]),
+      el("p", {class:"small muted"}, ["These subtract from “dominant-likelihood” for this function."])
+    ]));
+
+    fn.notDominant.forEach((text, i) => {
+      const r = resp.anti[i] || {freq:0};
+      const wrap = el("div", {class:"q"}, [
+        el("h3", {}, [text]),
+        el("div", {class:"row"}, [
+          el("label", {}, ["Frequency:"]),
+          el("input", {
+            type:"range", min:"0", max:"4", step:"1",
+            value: String(r.freq ?? 0),
+            oninput: (e)=>{
+              r.freq = Number(e.target.value);
+              resp.anti[i] = r;
+              saveState();
+              document.getElementById(`antiLbl_${fnId}_${i}`).textContent = ratingLabel(r.freq);
+            }
+          }),
+          el("span", {id:`antiLbl_${fnId}_${i}`, class:"pill"}, [ratingLabel(r.freq ?? 0)])
+        ])
+      ]);
+      sec.appendChild(wrap);
+    });
+
+    // Prompts
+    sec.appendChild(el("div", {class:"q"}, [
+      el("h3", {}, ["Prompts — rate + recurrence + example"]),
+      el("p", {class:"small muted"}, [
+        "Recurrence matters. Mark “one-off” if it’s not a stable pattern. Check “stress/grip” if it mainly happens under stress."
+      ])
+    ]));
+
+    fn.prompts.forEach((qText, i) => {
+      const r = resp.prompts[i] || {freq:0, rec:"repeated", stress:false, example:""};
+      const qBox = el("div", {class:"q"}, [
+        el("h3", {}, [qText]),
+        el("div", {class:"row"}, [
+          el("label", {}, ["Frequency:"]),
+          el("input", {
+            type:"range", min:"0", max:"4", step:"1",
+            value: String(r.freq ?? 0),
+            oninput: (e)=>{
+              r.freq = Number(e.target.value);
+              resp.prompts[i] = r;
+              saveState();
+              document.getElementById(`posLbl_${fnId}_${i}`).textContent = ratingLabel(r.freq);
+            }
+          }),
+          el("span", {id:`posLbl_${fnId}_${i}`, class:"pill"}, [ratingLabel(r.freq ?? 0)]),
+          el("label", {style:"margin-left:8px"}, ["Recurrence:"]),
+          (function(){
+            const sel = el("select", {}, [
+              el("option", {value:"oneoff"}, ["one-off / rare"]),
+              el("option", {value:"repeated"}, ["repeated pattern"]),
+              el("option", {value:"lifelong"}, ["lifelong / very stable"])
+            ]);
+            sel.value = r.rec || "repeated";
+            sel.addEventListener("change", (e)=>{
+              r.rec = e.target.value;
+              resp.prompts[i] = r;
+              saveState();
+            });
+            return sel;
+          })(),
+          el("label", {style:"margin-left:8px"}, [
+            (function(){
+              const cb = el("input", {type:"checkbox"});
+              cb.checked = !!r.stress;
+              cb.addEventListener("change", (e)=>{
+                r.stress = !!e.target.checked;
+                resp.prompts[i] = r;
+                saveState();
+              });
+              return cb;
+            })(),
+            " Mostly under stress/grip"
+          ])
+        ]),
+        el("textarea", {
+          placeholder: "Write 2–3 real situations over time. What happened? What did you notice? What did you do? WHY did you do it?",
+          oninput: (e)=>{
+            r.example = e.target.value;
+            resp.prompts[i] = r;
+            saveState();
+          }
+        }, [r.example || ""])
+      ]);
+      sec.appendChild(qBox);
+    });
+
+    det.appendChild(sec);
+    container.appendChild(det);
+  }
+}
+
+function renderResults(){
+  const fnScores = calcAllFunctions();
+  const fnEntries = Object.entries(fnScores)
+    .map(([id,v])=>({id, ...v}))
+    .sort((a,b)=>b.score - a.score);
+
+  // Function rank summary
+  const fnRank = document.getElementById("fnRank");
+  fnRank.innerHTML = "";
+  const topFns = fnEntries.slice(0,4).map(x=>`${x.id} (${x.score})`).join(" • ");
+  fnRank.appendChild(el("div", {class:"note"}, [
+    el("div", {class:"inline"}, [
+      el("span", {class:"badge"}, ["Top functions:"]),
+      el("span", {class:"mono"}, [topFns || "—"])
+    ]),
+    el("p", {style:"margin:8px 0 0 0"}, [
+      "These are evidence scores from your ratings + recurrence + stress flags + anti-signs."
+    ])
+  ]));
+
+  // Function table
+  const fnTable = document.getElementById("fnTable");
+  fnTable.innerHTML = "";
+  const t = el("table", {}, [
+    el("thead", {}, [
+      el("tr", {}, [
+        el("th", {}, ["Function"]),
+        el("th", {}, ["Evidence"]),
+        el("th", {}, ["Bar"]),
+        el("th", {}, ["Notes"])
+      ])
+    ]),
+    el("tbody", {}, fnEntries.map(row=>{
+      const bar = el("div", {class:"bar"}, [el("div", {style:`width:${row.score}%`}, [])]);
+      const notes = `examples ok: ${Math.round(row.completeness*100)}% • anti-signs: ${Math.round(row.negNorm*100)}%`;
+      return el("tr", {}, [
+        el("td", {}, [
+          el("div", {class:"inline"}, [
+            el("span", {class:"badge"}, [row.id]),
+            el("span", {}, [QUESTION_BANK[row.id].title])
+          ]),
+          el("div", {class:"small muted"}, [QUESTION_BANK[row.id].kind])
+        ]),
+        el("td", {class:"right mono"}, [String(row.score)]),
+        el("td", {}, [bar]),
+        el("td", {class:"small muted"}, [notes])
+      ]);
+    }))
+  ]);
+  fnTable.appendChild(t);
+
+  // Type scores
+  const typeScores = calcTypeScores(fnScores);
+  const probs = softmax(typeScores, 7.5);
+  const typeEntries = Object.entries(typeScores)
+    .map(([type,score])=>({type, score, p: probs[type] || 0}))
+    .sort((a,b)=>b.score - a.score);
+
+  const typeRank = document.getElementById("typeRank");
+  typeRank.innerHTML = "";
+
+  const best = typeEntries[0];
+  const bestStack = TYPE_STACKS[best.type];
+  const bestLine = `${best.type} — ${bestStack.join("–")} (match ${best.score.toFixed(1)}, ~${Math.round(best.p*100)}%)`;
+
+  typeRank.appendChild(el("div", {class:"note"}, [
+    el("div", {class:"inline"}, [
+      el("span", {class:"badge"}, ["Top stack:"]),
+      el("span", {class:"mono"}, [bestLine])
+    ]),
+    el("p", {style:"margin:8px 0 0 0"}, [
+      "Click a candidate below to see how your Dom/Aux/Tert/Inf scores line up."
+    ])
+  ]));
+
+  const topList = typeEntries.slice(0,5);
+  topList.forEach(entry=>{
+    const stack = TYPE_STACKS[entry.type];
+    const tc = el("div", {class:"typeCard"}, []);
+    const head = el("div", {class:"typeHead"}, [
+      el("div", {}, [
+        el("p", {class:"typeName"}, [
+          `${entry.type} `,
+          el("span", {class:"pill mono"}, [`~${Math.round(entry.p*100)}%`])
+        ]),
+        el("p", {class:"stack"}, [
+          stack.map((fn,i)=>`${POSITION_NAMES[i]}:${fn}`).join("  |  ")
+        ])
+      ]),
+      el("button", {class:"btn", onclick: ()=>toggleTypeDetails(entry.type)}, ["Details"])
+    ]);
+    tc.appendChild(head);
+
+    const detailsId = `typeDetails_${entry.type}`;
+    const details = el("div", {id: detailsId, style:"display:none; margin-top:10px;"}, []);
+    details.appendChild(renderTypeDetails(entry.type, fnScores));
+    tc.appendChild(details);
+
+    typeRank.appendChild(tc);
+  });
+
+  // Tie-break hint
+  const tieBreak = document.getElementById("tieBreak");
+  tieBreak.innerHTML = "";
+  const second = typeEntries[1];
+  if (second){
+    const gap = best.score - second.score;
+    if (gap < 3.0){
+      const diffFns = symmetricDiff(TYPE_STACKS[best.type], TYPE_STACKS[second.type]);
+      tieBreak.appendChild(el("div", {class:"note warn"}, [
+        el("b", {}, ["Close call."]),
+        " Your top 2 stacks are very close. Re-check these differentiator functions: ",
+        el("span", {class:"mono"}, [diffFns.join(", ") || "—"]),
+        ". They’re usually what decides Dom/Aux and confirms Tert/Inf."
+      ]));
+    }else{
+      tieBreak.appendChild(el("div", {class:"note"}, [
+        el("b", {}, ["Not close."]),
+        ` Your top stack is ahead by ${gap.toFixed(1)} points over #2. Still, confirm Tert/Inf by checking whether they feel less stable or more stress-activated.`
+      ]));
+    }
+  }
+}
+
+function renderTypeDetails(type, fnScores){
+  const stack = TYPE_STACKS[type];
+
+  const box = el("div", {class:"split"}, []);
+
+  // Left: stack alignment
+  const left = el("div", {}, []);
+  left.appendChild(el("div", {class:"q"}, [
+    el("h3", {}, ["Stack alignment"]),
+    el("p", {class:"small muted"}, ["If your Inferior has high score and feels lifelong (not stress), your stack guess may be off."]
+  ]));
+
+  const rows = stack.map((fn,i)=>{
+    const s = fnScores[fn]?.score ?? 0;
+    const bar = el("div", {class:"bar"}, [el("div", {style:`width:${s}%`}, [])]);
+    return el("div", {class:"q"}, [
+      el("div", {class:"inline"}, [
+        el("span", {class:"badge"}, [POSITION_NAMES[i]]),
+        el("span", {class:"badge"}, [fn]),
+        el("span", {}, [QUESTION_BANK[fn].title]),
+        el("span", {class:"pill mono"}, [String(s)])
+      ]),
+      el("div", {style:"margin-top:8px"}, [bar]),
+      el("p", {class:"small muted"}, [
+        "Quick verify: does this position match your lived experience (automatic for Dom, supportive for Aux, inconsistent for Tert, stressy/awkward for Inf)?"
+      ])
+    ]);
+  });
+
+  rows.forEach(r=>left.appendChild(r));
+
+  // Right: confirmation prompts (for Tert/Inf)
+  const right = el("div", {}, []);
+  const tert = stack[2];
+  const inf = stack[3];
+
+  right.appendChild(el("div", {class:"q"}, [
+    el("h3", {}, ["Confirm Tert/Inf with targeted prompts"]),
+    el("p", {class:"small muted"}, [
+      "These are the most useful confirmation points—people often mistype because they only look at Dom/Aux."
+    ])
+  ]));
+
+  right.appendChild(renderConfirmBlock("Tertiary", tert));
+  right.appendChild(renderConfirmBlock("Inferior", inf));
+
+  return el("div", {}, [left, right]);
+}
+
+function renderConfirmBlock(posName, fnId){
+  const fn = QUESTION_BANK[fnId];
+  const block = el("div", {class:"q"}, [
+    el("div", {class:"inline"}, [
+      el("span", {class:"badge"}, [posName]),
+      el("span", {class:"badge"}, [fnId]),
+      el("span", {}, [fn.title])
+    ]),
+    el("p", {class:"small muted"}, [
+      "Pick 1–2 prompts below and check if your examples feel consistent and easy to sustain (higher) vs sporadic/stressy (lower)."
+    ])
+  ]);
+
+  // show first 3 prompts + 1 anti-sign to keep it short
+  fn.prompts.slice(0,3).forEach(p=>{
+    block.appendChild(el("p", {class:"small"}, ["• " + p]));
+  });
+  block.appendChild(el("p", {class:"small muted"}, ["Anti-sign example: " + fn.notDominant[0]]));
+
+  return block;
+}
+
+function symmetricDiff(a, b){
+  const sa = new Set(a), sb = new Set(b);
+  const out = [];
+  for (const x of sa) if (!sb.has(x)) out.push(x);
+  for (const x of sb) if (!sa.has(x)) out.push(x);
+  return out;
+}
+
+function toggleTypeDetails(type){
+  const id = `typeDetails_${type}`;
+  const elx = document.getElementById(id);
+  if (!elx) return;
+  elx.style.display = (elx.style.display === "none") ? "block" : "none";
+}
+
+function goto(step){
+  document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+  document.getElementById(`step-${step}`).classList.add("active");
+  if (step === "questions") renderFunctions();
+  if (step === "results") renderResults();
+  if (step === "export") { /* nothing heavy */ }
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function wireNav(){
+  document.querySelectorAll("[data-nav]").forEach(btn=>{
+    btn.addEventListener("click", ()=>goto(btn.getAttribute("data-nav")));
+  });
+}
+
+function resetAll(){
+  if (!confirm("Reset all ratings and examples? This clears local data.")) return;
+  localStorage.removeItem(STATE_KEY);
+  state = defaultState();
+  toast("Reset complete.");
+  goto("instructions");
+}
+
+function download(filename, text){
+  const blob = new Blob([text], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text).then(()=>toast("Copied."), ()=>toast("Copy failed."));
+}
+
+function buildLlmPrompt(){
+  const fnScores = calcAllFunctions();
+  const typeScores = calcTypeScores(fnScores);
+  const probs = softmax(typeScores, 7.5);
+  const topTypes = Object.entries(typeScores).map(([t,s])=>({t,s,p:probs[t]||0}))
+    .sort((a,b)=>b.s-a.s).slice(0,3);
+
+  let out = "";
+  out += "You are helping me interpret my MBTI cognitive function self-reflection answers.\n";
+  out += "Please:\n";
+  out += "1) Summarize recurring patterns per function (Si/Ni/Se/Ne/Ti/Fi/Te/Fe) from my examples.\n";
+  out += "2) Identify contradictions (e.g., high score but examples are one-off or only under stress).\n";
+  out += "3) Propose my most likely Dom/Aux and confirm with plausible Tert/Inf.\n";
+  out += "4) If multiple stacks are close, tell me which differentiator questions to revisit.\n\n";
+  out += "Top candidate stacks from the tool (for context only):\n";
+  topTypes.forEach(x=>{
+    out += `- ${x.t}: ${TYPE_STACKS[x.t].join("-")} (match ${x.s.toFixed(1)}, ~${Math.round(x.p*100)}%)\n`;
+  });
+  out += "\nMy raw answers follow.\n";
+  out += "Important: prioritize enduring patterns and the WHY behind behavior.\n\n";
+
+  for (const fnId of Object.keys(QUESTION_BANK)){
+    const fn = QUESTION_BANK[fnId];
+    const r = state.responses[fnId];
+    out += `=== ${fnId} — ${fn.title} ===\n`;
+    out += `Anti-signs (NOT dominant) ratings (0-4):\n`;
+    fn.notDominant.forEach((t,i)=>{
+      const v = r.anti[i]?.freq ?? 0;
+      out += `- ${v}: ${t}\n`;
+    });
+    out += `Prompts:\n`;
+    fn.prompts.forEach((p,i)=>{
+      const item = r.prompts[i] || {};
+      const freq = item.freq ?? 0;
+      const rec = item.rec ?? "repeated";
+      const stress = item.stress ? "YES" : "no";
+      const ex = (item.example || "").trim() || "(no example)";
+      out += `- Q: ${p}\n`;
+      out += `  Rating: ${freq}/4 | Recurrence: ${rec} | Stress/grip: ${stress}\n`;
+      out += `  Example: ${ex}\n`;
+    });
+    out += "\n";
+  }
+  return out;
+}
+
+function demoFill(){
+  // A light demo that creates variation; NOT intended to represent any real type.
+  for (const fnId of Object.keys(QUESTION_BANK)){
+    const r = state.responses[fnId];
+    r.anti.forEach((a)=>a.freq = Math.floor(Math.random()*3)); // 0..2
+    r.prompts.forEach((p)=>{
+      p.freq = Math.floor(Math.random()*5); // 0..4
+      p.rec = (Math.random()<0.2) ? "oneoff" : (Math.random()<0.5 ? "repeated" : "lifelong");
+      p.stress = Math.random()<0.15;
+      p.example = (p.freq>=3) ? "Example: (demo) I notice this pattern in multiple settings over time. WHY: (demo) because it feels like the default way I navigate situations." : "";
+    });
+  }
+  saveState();
+  toast("Demo data filled.");
+}
+
+function importJson(text){
+  try{
+    const parsed = JSON.parse(text);
+    if (!parsed.responses) throw new Error("Missing responses");
+    state = parsed;
+    saveState();
+    toast("Import complete.");
+    goto("questions");
+  }catch(e){
+    toast("Import failed: invalid JSON.");
+  }
+}
+
+(function init(){
+  wireNav();
+  renderFunctions();
+
+  document.getElementById("btnReset").addEventListener("click", resetAll);
+  document.getElementById("btnDemoFill").addEventListener("click", demoFill);
+
+  document.getElementById("btnDownloadJson").addEventListener("click", ()=>{
+    download("mbti_functions_answers.json", JSON.stringify(state, null, 2));
+  });
+  document.getElementById("btnCopyJson").addEventListener("click", ()=>{
+    copyToClipboard(JSON.stringify(state, null, 2));
+  });
+
+  document.getElementById("btnMakeLlmPrompt").addEventListener("click", ()=>{
+    const p = buildLlmPrompt();
+    document.getElementById("llmPrompt").value = p;
+    toast("LLM prompt generated.");
+  });
+  document.getElementById("btnCopyLlmPrompt").addEventListener("click", ()=>{
+    copyToClipboard(document.getElementById("llmPrompt").value || "");
+  });
+
+  document.getElementById("btnImportJson").addEventListener("click", ()=>{
+    const f = document.getElementById("jsonFile").files?.[0];
+    if (!f){ toast("Choose a JSON file first."); return; }
+    const reader = new FileReader();
+    reader.onload = ()=>importJson(String(reader.result||""));
+    reader.readAsText(f);
+  });
+
+  // Start on instructions by default
+  goto("instructions");
+})();
+</script>
+</body>
+</html>
