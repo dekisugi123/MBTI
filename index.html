@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBTI Cognitive Functions AI Analyzer - dekisugi123.github.io</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #333; }
+    h1 { color: #24292f; border-bottom: 1px solid #d0d7de; padding-bottom: 10px; }
+    textarea { width: 100%; height: 160px; padding: 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; box-sizing: border-box; margin: 15px 0; }
+    button { background: #2ea44f; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; }
+    button:hover { background: #2c974b; }
+    button:disabled { background: #6a737d; cursor: not-allowed; }
+    #result { margin-top: 20px; padding: 20px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; white-space: pre-wrap; min-height: 100px; font-size: 15px; }
+    .loading { color: #586069; }
+    .error { color: #d73a49; background: #ffeef0; border-color: #d73a49; }
+    footer { margin-top: 40px; text-align: center; font-size: 12px; color: #6a737d; }
+  </style>
+</head>
+<body>
+  <h1>🧠 MBTI Cognitive Functions AI Analyzer</h1>
+  <p>Powered by free <a href="https://groq.com" target="_blank">Groq AI</a>. Enter thoughts/preferences/quiz answers for instant stack analysis (e.g., Ti-Ne-Si-Fe).</p>
+  <textarea id="answers" placeholder="Example: I love deep analysis but hate small talk. I plan long-term but overlook details sometimes..."></textarea>
+  <br>
+  <button id="analyzeBtn" onclick="analyze()">🔍 Analyze Functions</button>
+  <div id="result">Enter text above and click Analyze for AI results!</div>
+  
+  <footer>Built with GitHub Pages | <a href="https://console.groq.com/keys" target="_blank">Get Free Groq Key</a></footer>
+
+  <script>
+    async function analyze() {
+      const input = document.getElementById('answers').value.trim();
+      if (!input) return alert('Please describe your thoughts first!');
+      
+      const resultDiv = document.getElementById('result');
+      const btn = document.getElementById('analyzeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Analyzing...';
+      resultDiv.textContent = 'Contacting Groq AI...';
+      resultDiv.className = 'loading';
+      
+      const API_KEY = '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';  // ← Replace with your key!
+      
+      if (API_KEY === 'YOUR_FREE_GROQ_KEY_HERE') {
+        resultDiv.innerHTML = '🚀 <strong>First:</strong> Sign up free at <a href="https://console.groq.com" target="_blank">console.groq.com</a> > API Keys > Create API Key.<br>Then edit this file, replace the key, commit/push. Test locally by opening HTML.';
+        btn.disabled = false;
+        btn.textContent = '🔍 Analyze Functions';
+        return;
+      }
+
+      try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'llama3-8b-8192',
+            messages: [{ role: 'user', content: `Analyze MBTI cognitive functions from: "${input}". Identify likely stack and explain strengths/weaknesses in 4-6 sentences. Be precise and insightful.` }],
+            max_tokens: 400,
+            temperature: 0.7
+          })
+        });
+        const data = await response.json();
+        if (data.choices?.[0]?.message?.content) {
+          resultDiv.textContent = data.choices[0].message.content;
+          resultDiv.className = '';
+        } else {
+          throw new Error(data.error?.message || 'Invalid response');
+        }
+      } catch (error) {
+        resultDiv.textContent = `❌ Error: ${error.message}\n\nTips: Check key validity, rate limits (30/min free), or internet. View console (F12) for details.`;
+        resultDiv.className = 'error';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔍 Analyze Functions';
+      }
+    }
+  </script>
+</body>
+</html>
