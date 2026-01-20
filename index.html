@@ -1104,9 +1104,11 @@ function renderTypeDetails(type, fnScores){
 
   // Left: stack alignment
   const left = el("div", {}, []);
-  left.appendChild(el("div", {class:"q"}, [
+    left.appendChild(el("div", {class:"q"}, [
     el("h3", {}, ["Stack alignment"]),
-    el("p", {class:"small muted"}, ["If your Inferior has high score and feels lifelong (not stress), your stack guess may be off."]
+    el("p", {class:"small muted"}, [
+      "If your Inferior has high score and feels lifelong (not stress), your stack guess may be off."
+    ])
   ]));
 
   const rows = stack.map((fn,i)=>{
