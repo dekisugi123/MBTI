@@ -495,6 +495,77 @@
     .switch input:checked + .slider::before{
       transform: translate(20px, -50%);
     }
+    .nav { align-items: center; }
+
+    /* Mobile: compact header + collapsible menu */
+    @media (max-width: 720px){
+      .wrap{ padding: 12px 12px; }
+      h1{ font-size: 18px; }
+      .sub{ display:none; }          /* hide long subtitle on mobile */
+      .kpi{ display:none; }          /* hide KPI pills on mobile */
+    
+      /* Make buttons smaller */
+      .btn{
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    
+      /* Collapsible menu container */
+      .nav{
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+    
+      /* This is the hamburger button */
+      .menuBtn{
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+    
+      /* The items we collapse */
+      .navItems{
+        display:none;                /* hidden by default */
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+    
+      /* When menu is open */
+      .navItems.open{ display:flex; }
+    
+      /* Make toggles wrap nicely */
+      .togglePill{
+        padding: 6px 10px;
+      }
+    
+      /* Make range sliders fit small screens */
+      input[type="range"]{ width: 180px; }
+    
+      /* Make tables scroll horizontally if needed */
+      #fnTable, table{
+        display:block;
+        overflow-x:auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      table{ min-width: 520px; }
+    }
+    
+    /* Desktop default: show menu button only on mobile */
+    .menuBtn{ display:none; }
+    .navItems{ display:flex; gap:10px; flex-wrap: wrap; align-items:center; }
+    
+    @media (max-width: 720px){
+      .menuBtn{ display:inline-flex; }
+    }
+    @media (max-width: 720px){
+      .row{ gap: 8px; }
+      textarea{ min-height: 140px; }       /* easier typing on phone */
+      input[type="range"]{ width: 160px; } /* even smaller */
+    }
   </style>
 </head>
 
@@ -516,32 +587,37 @@
       </div>
 
       <div class="nav">
-        <button class="btn ghost" data-nav="instructions" data-i18n="nav_instructions">Instructions</button>
-        <button class="btn ghost" data-nav="questions" data-i18n="nav_questionnaire">Questionnaire</button>
-        <button class="btn primary" data-nav="results" data-i18n="nav_results">Results</button>
-        <button class="btn ghost" data-nav="export" data-i18n="nav_export">Export / LLM</button>
-
-        <!-- Language switch (EN <-> VI) -->
-        <div class="togglePill" title="Language / Ngôn ngữ">
-          <span class="small muted">EN</span>
-          <label class="switch">
-            <input type="checkbox" id="langSwitch" />
-            <span class="slider"></span>
-          </label>
-          <span class="small muted">VI</span>
-        </div>
-
-        <!-- Theme switch (Light <-> Dark) -->
-        <div class="togglePill" title="Theme">
-          <span class="small muted" data-i18n="theme_light">Light</span>
-          <label class="switch">
-            <input type="checkbox" id="themeSwitch" />
-            <span class="slider"></span>
-          </label>
-          <span class="small muted" data-i18n="theme_dark">Dark</span>
-        </div>
-
-        <button class="btn" id="btnReset" data-i18n="nav_reset">Reset</button>
+    <!-- NEW: mobile menu toggle -->
+    <button class="btn menuBtn" id="menuBtn" type="button">☰ Menu</button>
+  
+    <!-- NEW: everything collapses inside here on mobile -->
+    <div class="navItems" id="navItems">
+      <button class="btn ghost" data-nav="instructions" data-i18n="nav_instructions">Instructions</button>
+      <button class="btn ghost" data-nav="questions" data-i18n="nav_questionnaire">Questionnaire</button>
+      <button class="btn primary" data-nav="results" data-i18n="nav_results">Results</button>
+      <button class="btn ghost" data-nav="export" data-i18n="nav_export">Export / LLM</button>
+  
+      <!-- Language switch -->
+      <div class="togglePill" title="Language / Ngôn ngữ">
+        <span class="small muted">EN</span>
+        <label class="switch">
+          <input type="checkbox" id="langSwitch" />
+          <span class="slider"></span>
+        </label>
+        <span class="small muted">VI</span>
+      </div>
+  
+      <!-- Theme switch -->
+      <div class="togglePill" title="Theme">
+        <span class="small muted" data-i18n="theme_light">Light</span>
+        <label class="switch">
+          <input type="checkbox" id="themeSwitch" />
+          <span class="slider"></span>
+        </label>
+        <span class="small muted" data-i18n="theme_dark">Dark</span>
+      </div>
+  
+      <button class="btn" id="btnReset" data-i18n="nav_reset">Reset</button>
       </div>
     </div>
   </div>
@@ -1796,6 +1872,19 @@ function importJson(text){
 
 (function init(){
   wireNav();
+  const menuBtn = document.getElementById("menuBtn");
+  const navItems = document.getElementById("navItems");
+  if (menuBtn && navItems){
+    menuBtn.addEventListener("click", ()=>{
+      navItems.classList.toggle("open");
+    });
+  
+    // Auto-close menu after clicking a nav button
+    navItems.addEventListener("click", (e)=>{
+      const nav = e.target.closest("[data-nav]");
+      if (nav) navItems.classList.remove("open");
+    });
+  }
   lang = localStorage.getItem("lang") || "en";
   applyI18n();
 
